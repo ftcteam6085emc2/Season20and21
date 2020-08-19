@@ -1,8 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Season20and21.code;
 
-import android.media.MediaPlayer;
-
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,11 +21,17 @@ public class ChassisJoystick extends OpMode {
     @Override
     public void loop() {
 
-        robot.FrontLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
-        robot.RearLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+        robot.FrontLeft.setPower(gamepad1.left_stick_y);
+        robot.RearLeft.setPower(gamepad1.left_stick_y);
 
-        robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-        robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+        robot.FrontRight.setPower(-gamepad1.right_stick_y);
+        robot.RearRight.setPower(-gamepad1.right_stick_y);
+
+        robot.FrontLeft.setPower(gamepad1.left_stick_x);
+        robot.RearLeft.setPower(-gamepad1.left_stick_x);
+
+        robot.FrontRight.setPower(gamepad1.right_stick_x);
+        robot.RearRight.setPower(-gamepad1.right_stick_x);
 
         if(gamepad1.a){
             DriveStraightDistance(1000, 0.8);
@@ -53,7 +56,7 @@ public class ChassisJoystick extends OpMode {
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         DriveStraight(power);
-        while((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())){idle();}
+        while((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())){}
 
         StopDriving();
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
