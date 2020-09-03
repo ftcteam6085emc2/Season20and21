@@ -21,17 +21,11 @@ public class ChassisJoystick extends OpMode {
     @Override
     public void loop() {
 
-        robot.FrontLeft.setPower(gamepad1.left_stick_y);
-        robot.RearLeft.setPower(gamepad1.left_stick_y);
+        robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+        robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-        robot.FrontRight.setPower(-gamepad1.right_stick_y);
-        robot.RearRight.setPower(-gamepad1.right_stick_y);
-
-        robot.FrontLeft.setPower(gamepad1.left_stick_x);
-        robot.RearLeft.setPower(-gamepad1.left_stick_x);
-
-        robot.FrontRight.setPower(gamepad1.right_stick_x);
-        robot.RearRight.setPower(-gamepad1.right_stick_x);
+        robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+        robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
         if(gamepad1.a){
             DriveStraightDistance(1000, 0.8);
