@@ -1,5 +1,6 @@
  package org.firstinspires.ftc.teamcode.Season20and21.code;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -17,6 +18,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
      public DcMotor FrontRight  = null;
      public DcMotor RearLeft  = null;
      public DcMotor RearRight  = null;
+
+     public BNO055IMU imu = null;
 
      /* local OpMode members. */
      HardwareMap hwMap           =  null;
@@ -37,6 +40,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
          FrontRight  = hwMap.dcMotor.get("motor_0");
          RearLeft = hwMap.dcMotor.get("motor_2");
          RearRight = hwMap.dcMotor.get("motor_3");
+
+         imu = hwMap.get(BNO055IMU.class, "imu");
 
          FrontLeft.setPower(0);
          FrontRight.setPower(0);
