@@ -34,7 +34,7 @@ public class AutoTestingClean extends LinearOpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
@@ -88,18 +88,10 @@ public class AutoTestingClean extends LinearOpMode {
     }
 
     private void DriveStraight(double power) {
-        /*if(strafeCancel){
-            robot.FrontRight.setPower(power - 0.2);
-            robot.FrontLeft.setPower(-power);
-            robot.RearRight.setPower(power);
-            robot.RearLeft.setPower(-power - 0.2);
-        }
-        else {*/
         robot.FrontRight.setPower(power);
         robot.FrontLeft.setPower(power);
         robot.RearRight.setPower(power);
         robot.RearLeft.setPower(power);
-        //}
     }
 
     private void StopDriving() {
