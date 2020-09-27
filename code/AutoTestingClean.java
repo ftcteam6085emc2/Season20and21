@@ -61,7 +61,7 @@ public class AutoTestingClean extends LinearOpMode {
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        heading = formatAngle(angles.angleUnit, angles.firstAngle);
+        //heading = formatAngle(angles.angleUnit, angles.firstAngle);
         //telemetry.addLine(heading);
 
         DriveStraightDistance(1200, 0.4);
