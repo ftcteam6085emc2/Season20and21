@@ -19,8 +19,8 @@ public class AutoTestingClean extends LinearOpMode {
     boolean scanned = true;
     int tZone = 0;
     double targetHeading = 0;
-    double currentHeading;
-    String heading;
+    double currentHeading = 0;
+    String heading = "0";
 
     Orientation angles;
     Acceleration gravity;
@@ -29,8 +29,6 @@ public class AutoTestingClean extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap);
-
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -38,6 +36,9 @@ public class AutoTestingClean extends LinearOpMode {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        robot.init(hardwareMap);
+        robot.imu.initialize(parameters);
 
         robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -61,7 +62,7 @@ public class AutoTestingClean extends LinearOpMode {
         waitForStart();
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         heading = formatAngle(angles.angleUnit, angles.firstAngle);
-        telemetry.addLine(heading);
+        //telemetry.addLine(heading);
 
         DriveStraightDistance(1200, 0.4);
         sleep(1000);
@@ -109,7 +110,7 @@ public class AutoTestingClean extends LinearOpMode {
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
-            currentHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+            /*currentHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
             if(currentHeading > targetHeading + 3){
                 robot.FrontRight.setPower(power - 0.1);
                 robot.FrontLeft.setPower(power + 0.1);
@@ -127,7 +128,7 @@ public class AutoTestingClean extends LinearOpMode {
                 robot.FrontLeft.setPower(power);
                 robot.RearRight.setPower(power);
                 robot.RearLeft.setPower(power);
-            }
+            }*/
         }
 
         StopDriving();

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class ChassisJoystick extends OpMode {
 
     HWMap robot = new HWMap();
+    boolean detected = false;
 
     @Override
     public void init() {
@@ -20,13 +21,17 @@ public class ChassisJoystick extends OpMode {
 
     @Override
     public void loop() {
+        if(robot.sensorColor.alpha() > 200){ detected = true; }
+        if (!detected) {
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-        robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-        robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
-
-        robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-        robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-
+            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+        }
+        else {
+            StopDriving();
+        }
         if(gamepad1.a){
             DriveStraightDistance(1000, 0.8);
         }
