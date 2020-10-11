@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code;
+package org.firstinspires.ftc.teamcode.Season20and21.code.Touchdown;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutoTestingClean", group = "Concept")
-public class AutoTestingClean extends LinearOpMode {
+@Autonomous(name = "AutoTestingCleanTOUCHDOWN", group = "Concept")
+public class AutoTestingCleanTouchdown extends LinearOpMode {
 
-    HWMap robot = new HWMap();
+    int tZone = 0;
+    HWMapTouchdown robot = new HWMapTouchdown();
 
     @Override
     public void runOpMode() {
@@ -34,11 +35,25 @@ public class AutoTestingClean extends LinearOpMode {
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
 
-        DriveStraightDistance(1200, 0.4);
+        DriveStraightDistance(5700, 0.4);
         sleep(1000);
-        DriveStraightDistance(-1200, -0.4);
-        sleep(3000);
 
+        tZone = 3;
+        switch (tZone) {
+            case 1:
+                DriveStraightDistance(-5700, 0.8);
+                break;
+            case 2:
+                DriveStraightDistance(1900, 0.8);
+                Strafe(-1800, -0.6);
+                DriveStraightDistance(-500, 0.8);
+                Strafe(1800, 0.6);
+                DriveStraightDistance(-7100, 0.8);
+                break;
+            case 3:
+                DriveStraightDistance(3800, 0.8);
+                DriveStraightDistance(-9500, 0.8);
+        }
     }
 
     private void DriveStraight(double power) {
@@ -55,10 +70,10 @@ public class AutoTestingClean extends LinearOpMode {
     private void DriveStraightDistance(int distance, double power) {
         telemetry.update();
 
-        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
-        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
-        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
-        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() - distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() - distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
 
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
@@ -71,10 +86,10 @@ public class AutoTestingClean extends LinearOpMode {
     private void Strafe(int distance, double power) {
         telemetry.update();
 
-        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
-        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
-        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() - distance);
-        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() - distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
 
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {

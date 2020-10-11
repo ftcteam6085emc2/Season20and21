@@ -1,4 +1,4 @@
- package org.firstinspires.ftc.teamcode.Season20and21.code;
+ package org.firstinspires.ftc.teamcode.Season20and21.code.Duck;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;

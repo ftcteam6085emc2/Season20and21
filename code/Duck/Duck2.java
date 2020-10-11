@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code;
+package org.firstinspires.ftc.teamcode.Season20and21.code.Duck;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp(name="Duck2", group="Test")
 public class Duck2 extends OpMode {

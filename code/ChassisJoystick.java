@@ -4,11 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="Chassis", group="Test")
+@TeleOp(name = "Chassis", group = "Test")
 public class ChassisJoystick extends OpMode {
 
     HWMap robot = new HWMap();
-    boolean detected = false;
 
     @Override
     public void init() {
@@ -21,23 +20,21 @@ public class ChassisJoystick extends OpMode {
 
     @Override
     public void loop() {
-        if(robot.sensorColor.alpha() > 200){ detected = true; }
-        if (!detected) {
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+        if (robot.sensorColor.alpha() > 200) {
+            telemetry.addLine("Line detected");
+            telemetry.update();
+        }
+        robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+        robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-        }
-        else {
-            StopDriving();
-        }
-        if(gamepad1.a){
+        robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+        robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+        if (gamepad1.a) {
             DriveStraightDistance(1000, 0.8);
         }
     }
 
-    private void DriveStraightDistance(int distance, double power){
+    private void DriveStraightDistance(int distance, double power) {
         telemetry.addData("Driving", "Yes");
         robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,7 +52,8 @@ public class ChassisJoystick extends OpMode {
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         DriveStraight(power);
-        while((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())){}
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())) {
+        }
 
         StopDriving();
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -64,7 +62,7 @@ public class ChassisJoystick extends OpMode {
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    private void DriveStraight(double power){
+    private void DriveStraight(double power) {
         /*if(strafeCancel){
             robot.FrontRight.setPower(power - 0.2);
             robot.FrontLeft.setPower(-power);
@@ -79,5 +77,7 @@ public class ChassisJoystick extends OpMode {
         //}
     }
 
-    private void StopDriving (){DriveStraight(0);}
+    private void StopDriving() {
+        DriveStraight(0);
+    }
 }
