@@ -37,6 +37,8 @@ public class HWMapTouchdown {
 
     public ColorSensor sensorColor = null;
     public DistanceSensor sensorDistance = null;
+    public DistanceSensor sensorRangeTop = null;
+    public DistanceSensor sensorRangeBottom = null;
 
     public RevBlinkinLedDriver RaveShadowLegends = null;
 
@@ -77,6 +79,8 @@ public class HWMapTouchdown {
 
         sensorColor = hwMap.get(ColorSensor.class, "colorSensor");
         sensorDistance = hwMap.get(DistanceSensor.class, "colorSensor");
+        sensorRangeTop = hwMap.get(DistanceSensor.class, "rangeSensorTop");
+        sensorRangeBottom = hwMap.get(DistanceSensor.class, "rangeSensorBottom");
 
         RaveShadowLegends = hwMap.get(RevBlinkinLedDriver.class, "RaveShadowLegends");
 
