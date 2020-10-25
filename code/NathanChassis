@@ -67,7 +67,7 @@ public class NathanChassis extends OpMode {
             //robot.RearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //encoderDrive(1, 70, 100, 25);
-            DriveStraightDistance(1200, 0.2);
+            DriveStraightDistance(2400, 0.4);
         
             telemetry.addData("RightCurrentPosition", robot.FrontRight.getCurrentPosition());
             telemetry.addData("LeftCurrentPosition", robot.FrontLeft.getCurrentPosition());
@@ -75,10 +75,10 @@ public class NathanChassis extends OpMode {
         }
         NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
         telemetry.addLine()
-              .addData("a", "%.3f", colors.alpha)
-              .addData("r", "%.3f", colors.red)
-              .addData("g", "%.3f", colors.green)
-              .addData("b", "%.3f", colors.blue);
+              .addData("white", "%.3f", colors.alpha)
+              .addData("red", "%.3f", colors.red)
+              .addData("green", "%.3f", colors.green)
+              .addData("blue", "%.3f", colors.blue);
         int color = colors.toColor();
          float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
         colors.red   /= max;
@@ -92,11 +92,12 @@ public class NathanChassis extends OpMode {
               .addData("g", "%02x", Color.green(color))
               .addData("b", "%02x", Color.blue(color));
         telemetry.update();
-
+        
     }
-
+    
     private void DriveStraightDistance(int distance, double power){
         telemetry.addData("Driving", "Yes");
+        
         robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -113,8 +114,20 @@ public class NathanChassis extends OpMode {
         robot.RearLeft.setTargetPosition(-distance);
 
         DriveStraight(power);
-        while((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()));
+        while(robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())
+        {
+            NormalizedRGBA colors = robot.colorSensor.getNormalizedColors();
+            int color = colors.toColor();
+            
+            //if (Color.alpha(color) >= 6)
+              if (Color.blue(color)  >= 60)
+                break;
+                
+        }
 
+        
+               
+                
         StopDriving();
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -130,78 +143,13 @@ public class NathanChassis extends OpMode {
             robot.RearLeft.setPower(-power - 0.2);
         }
         else {*/
-        robot.FrontRight.setPower(-power);
-        robot.FrontLeft.setPower(power);
-        robot.RearRight.setPower(-power);
         robot.RearLeft.setPower(power);
+        robot.RearRight.setPower(power);
+        robot.FrontRight.setPower(power);
+        robot.FrontLeft.setPower(power);
         //}
     }
 
     private void StopDriving (){DriveStraight(0);}
     
-    public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
-                             double timeoutS) {
-        int newLeftTarget;
-        int newRightTarget;
-
-        // Ensure that the opmode is still active
-        //if (opModeIsActive()) {
-             if (true) {
-
-            // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.FrontLeft.getCurrentPosition() + (int)(-leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.FrontRight.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
-            robot.FrontLeft.setTargetPosition(newLeftTarget);
-            robot.FrontRight.setTargetPosition(newRightTarget);
-            robot.RearLeft.setTargetPosition(newLeftTarget);
-            robot.RearRight.setTargetPosition(newRightTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.RearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.RearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            robot.FrontLeft.setPower(Math.abs(speed));
-            robot.FrontRight.setPower(Math.abs(speed));
-            robot.RearLeft.setPower(Math.abs(speed));
-            robot.RearRight.setPower(Math.abs(speed));
-
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
-            // its target position, the motion will stop.  This is "safer" in the event that the robot will
-            // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
-            // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (true &&
-                   (runtime.seconds() < timeoutS) &&
-                   (robot.FrontLeft.isBusy() && robot.FrontRight.isBusy() && 
-                   robot.RearLeft.isBusy() && robot.RearRight.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            robot.FrontLeft.getCurrentPosition(),
-                                            robot.FrontRight.getCurrentPosition());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            robot.FrontLeft.setPower(0);
-            robot.FrontRight.setPower(0);
-            robot.RearLeft.setPower(0);
-            robot.RearRight.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            //  sleep(250);   // optional pause after each move
-        }
-    }
 }
