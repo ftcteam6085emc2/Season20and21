@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code;
+package org.firstinspires.ftc.teamcode.Season20and21.code.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp.HWMap;
 
 @Autonomous(name = "AutoTestingClean", group = "Concept")
 public class AutoTestingClean extends LinearOpMode {

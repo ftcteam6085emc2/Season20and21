@@ -1,5 +1,5 @@
 
-        package org.firstinspires.ftc.teamcode.Season20and21.code;
+        package org.firstinspires.ftc.teamcode.Season20and21.code.Autonomous;
 
         import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -17,6 +17,7 @@
         import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
         import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
         import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+        import org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp.HWMap;
 
         import java.util.ArrayList;
         import java.util.List;

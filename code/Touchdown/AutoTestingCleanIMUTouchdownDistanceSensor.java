@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -18,20 +17,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.R;
 
 import java.util.Locale;
 
 @Autonomous(name = "AutoTestingCleanIMUTOUCHDOWNDistanceSensor", group = "Concept")
 public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
-    boolean scanned = true;
     int tZone = 0;
     double targetHeading = 0;
     double currentHeading = 0;
     int averageCount1 = 0;
     int averageCount2 = 0;
     int averageCount3 = 0;
-    boolean detectedWhite = false;
+    boolean whiteDetected = false;
 
     Orientation angles;
 
@@ -73,23 +70,23 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        relativeLayout.post(new Runnable() {
+            public void run() {
+                relativeLayout.setBackgroundColor(Color.WHITE);
+            }
+        });
 
         DriveStraightDistanceSquared(2400, 0.8);
-        Strafe(1800, 0.6);
+        Strafe(1200, 0.6);
         DriveStraightDistance(3000, 0.8);
-        DriveStraightDistanceColor(500, 0.4);
-        if(detectedWhite) {
-            relativeLayout.setBackgroundColor(Color.GREEN);
+        DriveStraightDistanceColor(1000, 0.4);
+        if(whiteDetected){
+            relativeLayout.post(new Runnable() {
+                public void run() {
+                    relativeLayout.setBackgroundColor(Color.GREEN);
+                }
+            });
         }
-        /*if(robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 25){
-            tZone = 3;
-        }
-        else if (robot.sensorRangeBottom.getDistance(DistanceUnit.CM) < 25){
-            tZone = 2;
-        }
-        else {
-            tZone = 1;
-        }*/
 
         if(averageCount1 > averageCount2 && averageCount1 > averageCount3){
             tZone = 1;
@@ -103,19 +100,21 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
 
         switch (tZone) {
             case 1:
-                DriveStraightDistance(-5700, 0.8);
+                DriveStraightDistance(-6200, 0.8);
                 break;
             case 2:
                 DriveStraightDistance(1900, 0.8);
                 Strafe(-1800, -0.6);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(1800, 0.6);
-                DriveStraightDistance(-7100, 0.8);
+                DriveStraightDistance(-7600, 0.8);
                 break;
             case 3:
                 DriveStraightDistance(3800, 0.8);
-                DriveStraightDistance(-9500, 0.8);
+                DriveStraightDistance(-10000, 0.8);
         }
+
+        Strafe(-1200, 0.6);
     }
 
     private void DriveStraight(double power) {
@@ -222,7 +221,7 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
             idle();
 
             if(robot.sensorColor.alpha() >= 2500){
-                detectedWhite = true;
+                whiteDetected = true;
                 break;
             }
         }
