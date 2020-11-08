@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -75,7 +76,6 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 relativeLayout.setBackgroundColor(Color.WHITE);
             }
         });
-
         DriveStraightDistanceSquared(2400, 0.8);
         Strafe(1200, 0.6);
         DriveStraightDistance(3000, 0.8);
@@ -86,6 +86,8 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                     relativeLayout.setBackgroundColor(Color.GREEN);
                 }
             });
+            telemetry.addLine("Mayo Detected");
+            telemetry.update();
         }
 
         if(averageCount1 > averageCount2 && averageCount1 > averageCount3){
@@ -100,6 +102,10 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
 
         switch (tZone) {
             case 1:
+                while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
+                    DriveStraight(0.4);
+                }
+                StopDriving();
                 DriveStraightDistance(-6200, 0.8);
                 break;
             case 2:
@@ -107,10 +113,18 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 Strafe(-1800, -0.6);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(1800, 0.6);
+                while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
+                    DriveStraight(0.4);
+                }
+                StopDriving();
                 DriveStraightDistance(-7600, 0.8);
                 break;
             case 3:
                 DriveStraightDistance(3800, 0.8);
+                while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 60  && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 0cm - 60cm
+                    DriveStraight(0.4);
+                }
+                StopDriving();
                 DriveStraightDistance(-10000, 0.8);
         }
 
