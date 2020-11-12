@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.teamcode.Season20and21.code.HeadingHolder;
 
 import java.util.Locale;
 
@@ -129,6 +130,8 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         }
 
         Strafe(-1200, 0.6);
+        checkOrientation();
+        HeadingHolder.setHeading(currentHeading);
     }
 
     private void DriveStraight(double power) {
