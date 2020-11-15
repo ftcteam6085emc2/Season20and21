@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -23,8 +22,11 @@ public class RingleaderV1 extends OpMode {
     boolean dualMode = true;
     boolean powerIncrement = true;
     boolean spinning = false;
+    boolean leftCheck = true;
+    boolean rightCheck = true;
+    boolean backCheck = true;
     //boolean checkingOrientation = false;
-    boolean rightStickReleased = true;
+    //boolean rightStickReleased = true;
     double targetHeading = 0;
     double currentHeading = 0;
     int targetChanging = 90;
@@ -53,8 +55,12 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.guide){
+        if(gamepad1.back && backCheck){
             dualMode = !dualMode;
+            backCheck = false;
+        }
+        else if(!gamepad1.back){
+            backCheck = true;
         }
         telemetry.addLine("Dual Mode: "+dualMode);
         if(dualMode){
@@ -124,7 +130,7 @@ public class RingleaderV1 extends OpMode {
                 powerIncrement = true;
             }
 
-            if (gamepad2.dpad_left) {
+            if (gamepad2.dpad_left && leftCheck) {
                 if (targetChanging == 90) {
                     targetChanging /= 2;
                 } else if (targetChanging > 15) {
@@ -132,27 +138,35 @@ public class RingleaderV1 extends OpMode {
                 } else {
                     targetChanging = 90;
                 }
+                leftCheck = false;
+            }
+            else if (!gamepad2.dpad_left){
+                leftCheck = true;
             }
 
-            if (gamepad2.dpad_right) {
+            if (gamepad2.dpad_right && rightCheck) {
                 targetHeading -= targetChanging;
                 if (targetHeading == -360 || targetHeading == 360) {
                     targetHeading = 0;
                 }
+                rightCheck = false;
+            }
+            else if(!gamepad2.dpad_right){
+                rightCheck = true;
             }
             if (gamepad1.start || gamepad2.start) {
                 while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
                     checkOrientation();
                     if (currentHeading < targetHeading + 1) {
                         robot.FrontRight.setPower(0.1);
-                        robot.FrontLeft.setPower(0);
-                        robot.RearRight.setPower(0.1);
-                        robot.RearLeft.setPower(0);
-                    } else if (currentHeading > targetHeading - 1) {
-                        robot.FrontRight.setPower(0);
                         robot.FrontLeft.setPower(0.1);
-                        robot.RearRight.setPower(0);
+                        robot.RearRight.setPower(0.1);
                         robot.RearLeft.setPower(0.1);
+                    } else if (currentHeading > targetHeading - 1) {
+                        robot.FrontRight.setPower(-0.1);
+                        robot.FrontLeft.setPower(-0.1);
+                        robot.RearRight.setPower(-0.1);
+                        robot.RearLeft.setPower(-0.1);
                     }
                 }
                 robot.FrontRight.setPower(0);
@@ -166,10 +180,16 @@ public class RingleaderV1 extends OpMode {
             }
 
             if(gamepad1.right_bumper){
-                Strafe(100, 0.8);
+                Strafe(100, 1);
             }
             else if(gamepad1.left_bumper){
-                Strafe(-100, 0.8);
+                Strafe(-100, 1);
+            }
+            else if(gamepad1.right_trigger > 0){
+                Strafe(100, 0.5);
+            }
+            else if(gamepad1.left_trigger > 0){
+                Strafe(-100, 0.5);
             }
         }
         else {
@@ -251,23 +271,23 @@ public class RingleaderV1 extends OpMode {
 
             if (gamepad1.dpad_right) {
                 targetHeading -= targetChanging;
-                if (targetHeading == -360 || targetHeading == 360) {
-                    targetHeading = 0;
+                if (targetHeading == -360) {
+                    targetHeading = 360;
                 }
             }
             if (gamepad1.start) {
-                checkOrientation();
                 while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
+                    checkOrientation();
                     if (currentHeading < targetHeading + 1) {
-                        robot.FrontRight.setPower(0.1);
-                        robot.FrontLeft.setPower(0);
-                        robot.RearRight.setPower(0.1);
-                        robot.RearLeft.setPower(0);
+                        robot.FrontRight.setPower(0.5);
+                        robot.FrontLeft.setPower(0.5);
+                        robot.RearRight.setPower(0.5);
+                        robot.RearLeft.setPower(0.5);
                     } else if (currentHeading > targetHeading - 1) {
-                        robot.FrontRight.setPower(0);
-                        robot.FrontLeft.setPower(0.1);
-                        robot.RearRight.setPower(0);
-                        robot.RearLeft.setPower(0.1);
+                        robot.FrontRight.setPower(-0.5);
+                        robot.FrontLeft.setPower(-0.5);
+                        robot.RearRight.setPower(-0.5);
+                        robot.RearLeft.setPower(-0.5);
                     }
                 }
                 robot.FrontRight.setPower(0);
@@ -310,47 +330,7 @@ public class RingleaderV1 extends OpMode {
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
 
         DriveStraight(power);
-        while (robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) {
-
-            checkOrientation();
-            if(distance == Math.abs(distance)) {
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
-            else{
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
-        }
-
+        while (robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) {}
         StopDriving();
     }
 }

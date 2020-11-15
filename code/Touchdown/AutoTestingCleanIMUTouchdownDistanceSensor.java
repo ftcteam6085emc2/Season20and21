@@ -117,7 +117,7 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
                     DriveStraight(0.4);
                 }
-                StopDriving();*/
+                StopDriving();
                 DriveStraightDistance(-7600, 0.8);
                 break;
             case 3:
