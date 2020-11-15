@@ -17,6 +17,7 @@ public class RingleaderHWMap {
     public DcMotor RearRight  = null;
     public DcMotor Collector  = null;
     public DcMotor Launcher  = null;
+    public DcMotor Elevator = null;
 
     public BNO055IMU imu = null;
 
@@ -41,6 +42,7 @@ public class RingleaderHWMap {
         RearRight = hwMap.dcMotor.get("rearRight");
         Collector = hwMap.dcMotor.get("collector");
         Launcher = hwMap.dcMotor.get("launcher");
+        Elevator = hwMap.dcMotor.get("elevator");
 
         imu = hwMap.get(BNO055IMU.class, "imu");
 

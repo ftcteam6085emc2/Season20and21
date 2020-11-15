@@ -20,9 +20,10 @@ public class RingleaderV1 extends OpMode {
 
     RingleaderHWMap robot = new RingleaderHWMap();
     double power = 0.5;
+    boolean dualMode = true;
     boolean powerIncrement = true;
     boolean spinning = false;
-    boolean checkingOrientation = false;
+    //boolean checkingOrientation = false;
     boolean rightStickReleased = true;
     double targetHeading = 0;
     double currentHeading = 0;
@@ -52,111 +53,232 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
-        if(checkingOrientation) {
+        if(gamepad1.guide){
+            dualMode = !dualMode;
+        }
+        telemetry.addLine("Dual Mode: "+dualMode);
+        if(dualMode){
             checkOrientation();
-        }
-        if(gamepad1.right_stick_button && rightStickReleased){
-            checkingOrientation = !checkingOrientation;
-            rightStickReleased = false;
-        }
-        else if(!gamepad1.right_stick_button){
-            rightStickReleased = true;
-        }
-        telemetry.addLine("Power is at: "+power);
-        telemetry.addLine("Target Heading: " + targetHeading);
-        telemetry.addLine("Current Heading: " + currentHeading);
-        telemetry.addLine("Target Changing: " + targetChanging);
-        robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-        robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
-
-        robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-        robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-
-        if(gamepad1.right_bumper){   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
-            robot.Collector.setPower(0);
-        }
-        else if(gamepad1.b){
-            robot.Collector.setPower(1);
-        }
-        else if(gamepad1.x){
-            robot.Collector.setPower(-1);
-        }
-
-        if(gamepad1.left_bumper){
-            robot.Launcher.setPower(0);
-            spinning = false;
-        }
-        else if(gamepad1.y){
-            robot.Launcher.setPower(Math.abs(power));
-            spinning = true;
-        }
-        else if(gamepad1.a){
-            robot.Launcher.setPower(-Math.abs(power));
-            spinning = true;
-        }
-        if(spinning){
-            telemetry.addLine(6000*power + " RPM!");
-        }
-
-        if(gamepad1.dpad_down && powerIncrement){   // 0.9 & 1.0 are too high, 0.7 & 0.8 go into the high goal,
-            power -= 0.1;   // 0.6 & 0.7 (rebound) can knock down powershots, 0.5 & 0.6 go into middle goal,
-            if(power < 0.1){   // and 0.4 & 0.5 go into the low goal, all from right behind white line
-                power = 0.1;   // Also there's a 15-30 degree angle to the right that the rings will travel
+            /*if (checkingOrientation) {
+                checkOrientation();
             }
-            powerIncrement = false;
-        }
-        else if (gamepad1.dpad_up && powerIncrement){
-            power += 0.1;
-            if (power > 1){
-                power = 1;
-            }
-            powerIncrement = false;
-        }
-        else if(!gamepad1.dpad_down && !gamepad1.dpad_up){
-            powerIncrement = true;
-        }
+            if (gamepad1.right_stick_button && rightStickReleased) {
+                checkingOrientation = !checkingOrientation;
+                rightStickReleased = false;
+            } else if (!gamepad1.right_stick_button) {
+                rightStickReleased = true;
+            }*/
+            telemetry.addLine("Power is at: " + power);
+            telemetry.addLine("Target Heading: " + targetHeading);
+            telemetry.addLine("Current Heading: " + currentHeading);
+            telemetry.addLine("Target Changing: " + targetChanging);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-        if(gamepad1.dpad_left){
-            if(targetChanging == 90){
-                targetChanging /= 2;
-            }
-            else if(targetChanging > 15){
-                targetChanging -= 15;
-            }
-            else{
-                targetChanging = 90;
-            }
-        }
+            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
-        if(gamepad1.dpad_right){
-            targetHeading -= targetChanging;
-            if(targetHeading == -360 || targetHeading == 360){
-                targetHeading = 0;
+            if (gamepad2.right_bumper) {   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
+                robot.Collector.setPower(0);
+            } else if (gamepad2.b) {
+                robot.Collector.setPower(1);
+            } else if (gamepad2.x) {
+                robot.Collector.setPower(-1);
             }
-        }
-        if(gamepad1.start){
-            checkOrientation();
-            while(!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
-                if (currentHeading < targetHeading + 1) {
-                    robot.FrontRight.setPower(0.1);
-                    robot.FrontLeft.setPower(0);
-                    robot.RearRight.setPower(0.1);
-                    robot.RearLeft.setPower(0);
-                } else if (currentHeading > targetHeading - 1) {
-                    robot.FrontRight.setPower(0);
-                    robot.FrontLeft.setPower(0.1);
-                    robot.RearRight.setPower(0);
-                    robot.RearLeft.setPower(0.1);
+
+            if (gamepad2.left_bumper) {
+                robot.Launcher.setPower(0);
+                spinning = false;
+            } else if (gamepad2.y) {
+                robot.Launcher.setPower(Math.abs(power));
+                spinning = true;
+            } else if (gamepad2.a) {
+                robot.Launcher.setPower(-Math.abs(power));
+                spinning = true;
+            }
+            if (spinning) {
+                telemetry.addLine(6000 * power + " RPM!");
+            }
+
+            if (gamepad2.right_trigger > 0) {
+                robot.Elevator.setPower(1);
+            } else if (gamepad2.left_trigger > 0) {
+                robot.Elevator.setPower(-1);
+            } else {
+                robot.Elevator.setPower(0);
+            }
+
+            if (gamepad2.dpad_down && powerIncrement) {   // 0.9 & 1.0 are too high, 0.7 & 0.8 go into the high goal,
+                power -= 0.1;   // 0.6 & 0.7 (rebound) can knock down powershots, 0.5 & 0.6 go into middle goal,
+                if (power < 0.1) {   // and 0.4 & 0.5 go into the low goal, all from right behind white line
+                    power = 0.1;   // Also there's a 15-30 degree angle to the right that the rings will travel
+                }
+                powerIncrement = false;
+            } else if (gamepad2.dpad_up && powerIncrement) {
+                power += 0.1;
+                if (power > 1) {
+                    power = 1;
+                }
+                powerIncrement = false;
+            } else if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
+                powerIncrement = true;
+            }
+
+            if (gamepad2.dpad_left) {
+                if (targetChanging == 90) {
+                    targetChanging /= 2;
+                } else if (targetChanging > 15) {
+                    targetChanging -= 15;
+                } else {
+                    targetChanging = 90;
                 }
             }
-            robot.FrontRight.setPower(0);
-            robot.FrontLeft.setPower(0);
-            robot.RearRight.setPower(0);
-            robot.RearLeft.setPower(0);
-        }
 
-        if(gamepad1.left_stick_button){
-            autoHeading = 0;
+            if (gamepad2.dpad_right) {
+                targetHeading -= targetChanging;
+                if (targetHeading == -360 || targetHeading == 360) {
+                    targetHeading = 0;
+                }
+            }
+            if (gamepad1.start || gamepad2.start) {
+                while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
+                    checkOrientation();
+                    if (currentHeading < targetHeading + 1) {
+                        robot.FrontRight.setPower(0.1);
+                        robot.FrontLeft.setPower(0);
+                        robot.RearRight.setPower(0.1);
+                        robot.RearLeft.setPower(0);
+                    } else if (currentHeading > targetHeading - 1) {
+                        robot.FrontRight.setPower(0);
+                        robot.FrontLeft.setPower(0.1);
+                        robot.RearRight.setPower(0);
+                        robot.RearLeft.setPower(0.1);
+                    }
+                }
+                robot.FrontRight.setPower(0);
+                robot.FrontLeft.setPower(0);
+                robot.RearRight.setPower(0);
+                robot.RearLeft.setPower(0);
+            }
+
+            if (gamepad2.left_stick_button) {
+                autoHeading = 0;
+            }
+
+            if(gamepad1.right_bumper){
+                Strafe(100, 0.8);
+            }
+            else if(gamepad1.left_bumper){
+                Strafe(-100, 0.8);
+            }
+        }
+        else {
+            checkOrientation();
+            /*if (checkingOrientation) {
+                checkOrientation();
+            }
+            if (gamepad1.right_stick_button && rightStickReleased) {
+                checkingOrientation = !checkingOrientation;
+                rightStickReleased = false;
+            } else if (!gamepad1.right_stick_button) {
+                rightStickReleased = true;
+            }*/
+            telemetry.addLine("Power is at: " + power);
+            telemetry.addLine("Target Heading: " + targetHeading);
+            telemetry.addLine("Current Heading: " + currentHeading);
+            telemetry.addLine("Target Changing: " + targetChanging);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+
+            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+
+            if (gamepad1.right_bumper) {   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
+                robot.Collector.setPower(0);
+            } else if (gamepad1.b) {
+                robot.Collector.setPower(1);
+            } else if (gamepad1.x) {
+                robot.Collector.setPower(-1);
+            }
+
+            if (gamepad1.left_bumper) {
+                robot.Launcher.setPower(0);
+                spinning = false;
+            } else if (gamepad1.y) {
+                robot.Launcher.setPower(Math.abs(power));
+                spinning = true;
+            } else if (gamepad1.a) {
+                robot.Launcher.setPower(-Math.abs(power));
+                spinning = true;
+            }
+            if (spinning) {
+                telemetry.addLine(6000 * power + " RPM!");
+            }
+
+            if (gamepad1.right_trigger > 0) {
+                robot.Elevator.setPower(1);
+            } else if (gamepad1.left_trigger > 0) {
+                robot.Elevator.setPower(-1);
+            } else {
+                robot.Elevator.setPower(0);
+            }
+
+            if (gamepad1.dpad_down && powerIncrement) {   // 0.9 & 1.0 are too high, 0.7 & 0.8 go into the high goal,
+                power -= 0.1;   // 0.6 & 0.7 (rebound) can knock down powershots, 0.5 & 0.6 go into middle goal,
+                if (power < 0.1) {   // and 0.4 & 0.5 go into the low goal, all from right behind white line
+                    power = 0.1;   // Also there's a 15-30 degree angle to the right that the rings will travel
+                }
+                powerIncrement = false;
+            } else if (gamepad1.dpad_up && powerIncrement) {
+                power += 0.1;
+                if (power > 1) {
+                    power = 1;
+                }
+                powerIncrement = false;
+            } else if (!gamepad1.dpad_down && !gamepad1.dpad_up) {
+                powerIncrement = true;
+            }
+
+            if (gamepad1.dpad_left) {
+                if (targetChanging == 90) {
+                    targetChanging /= 2;
+                } else if (targetChanging > 15) {
+                    targetChanging -= 15;
+                } else {
+                    targetChanging = 90;
+                }
+            }
+
+            if (gamepad1.dpad_right) {
+                targetHeading -= targetChanging;
+                if (targetHeading == -360 || targetHeading == 360) {
+                    targetHeading = 0;
+                }
+            }
+            if (gamepad1.start) {
+                checkOrientation();
+                while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
+                    if (currentHeading < targetHeading + 1) {
+                        robot.FrontRight.setPower(0.1);
+                        robot.FrontLeft.setPower(0);
+                        robot.RearRight.setPower(0.1);
+                        robot.RearLeft.setPower(0);
+                    } else if (currentHeading > targetHeading - 1) {
+                        robot.FrontRight.setPower(0);
+                        robot.FrontLeft.setPower(0.1);
+                        robot.RearRight.setPower(0);
+                        robot.RearLeft.setPower(0.1);
+                    }
+                }
+                robot.FrontRight.setPower(0);
+                robot.FrontLeft.setPower(0);
+                robot.RearRight.setPower(0);
+                robot.RearLeft.setPower(0);
+            }
+
+            if (gamepad1.left_stick_button) {
+                autoHeading = 0;
+            }
         }
     }
 
@@ -166,5 +288,69 @@ public class RingleaderV1 extends OpMode {
         robot.imu.getPosition();
         // and save the heading
         currentHeading = angles.firstAngle + autoHeading;
+    }
+
+    private void DriveStraight(double power) {
+        robot.FrontRight.setPower(power);
+        robot.FrontLeft.setPower(power);
+        robot.RearRight.setPower(power);
+        robot.RearLeft.setPower(power);
+    }
+
+    private void StopDriving() {
+        DriveStraight(0);
+    }
+
+    private void Strafe(int distance, double power) {
+        telemetry.update();
+
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() - distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
+
+        DriveStraight(power);
+        while (robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) {
+
+            checkOrientation();
+            if(distance == Math.abs(distance)) {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            }
+            else{
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            }
+        }
+
+        StopDriving();
     }
 }
