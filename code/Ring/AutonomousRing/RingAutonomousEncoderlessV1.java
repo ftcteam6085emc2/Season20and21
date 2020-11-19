@@ -1,55 +1,34 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Touchdown;
+package org.firstinspires.ftc.teamcode.Season20and21.code.Ring.AutonomousRing;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Season20and21.code.HeadingHolder;
+import org.firstinspires.ftc.teamcode.Season20and21.code.Ring.RingleaderHWMap;
 
-import java.util.Locale;
-
-@Autonomous(name = "AutoTestingCleanIMUTOUCHDOWNDistanceSensor", group = "Concept")
-public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
+@Autonomous(name = "RingAutonomousV1", group = "Concept")
+public class RingAutonomousEncoderlessV1 extends LinearOpMode {
     int tZone = 0;
-    double targetHeading = 0;
-    double currentHeading = 0;
     int averageCount1 = 0;
     int averageCount2 = 0;
     int averageCount3 = 0;
     boolean whiteDetected = false;
 
-    Orientation angles;
-
-    HWMapTouchdown robot = new HWMapTouchdown();
+    RingleaderHWMap robot = new RingleaderHWMap();
 
     @Override
     public void runOpMode() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         robot.init(hardwareMap);
-        robot.imu.initialize(parameters);
 
         robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -77,6 +56,10 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 relativeLayout.setBackgroundColor(Color.WHITE);
             }
         });
+
+        robot.Collector.setPower(0.5);
+        sleep(100);
+        robot.Collector.setPower(0);
         DriveStraightDistanceSquared(2400, 0.8);
         Strafe(1200, 0.6);
         DriveStraightDistance(3000, 0.8);
@@ -100,9 +83,14 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         else{
             tZone = 3;
         }
-
+        telemetry.update();
         switch (tZone) {
             case 1:
+                telemetry.addLine("There are 0 rings in the stack");
+                telemetry.update();
+                robot.Collector.setPower(-0.5);
+                sleep(200);
+                robot.Collector.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
                 }
@@ -110,8 +98,13 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 DriveStraightDistance(-6200, 0.8);
                 break;
             case 2:
+                telemetry.addLine("There is 1 ring in the stack");
+                telemetry.update();
                 DriveStraightDistance(1900, 0.8);
                 Strafe(-1800, -0.6);
+                robot.Collector.setPower(-0.5);
+                sleep(200);
+                robot.Collector.setPower(0);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(1800, 0.6);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
@@ -121,7 +114,12 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
                 DriveStraightDistance(-7600, 0.8);
                 break;
             case 3:
+                telemetry.addLine("There are 4 rings in the stack");
+                telemetry.update();
                 DriveStraightDistance(3800, 0.8);
+                robot.Collector.setPower(-0.5);
+                sleep(200);
+                robot.Collector.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 60  && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 0cm - 60cm
                     DriveStraight(0.4);
                 }
@@ -130,8 +128,6 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         }
 
         Strafe(-1200, 0.6);
-        checkOrientation();
-        HeadingHolder.setHeading(currentHeading);
     }
 
     private void DriveStraight(double power) {
@@ -156,44 +152,6 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
-
-            checkOrientation();
-            if(distance == Math.abs(distance)) {
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
-            else{
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
         }
 
         StopDriving();
@@ -257,62 +215,8 @@ public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
-
-            checkOrientation();
-            if(distance == Math.abs(distance)) {
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
-            else{
-                if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else if (currentHeading < targetHeading - 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else {
-                    robot.FrontRight.setPower(power);
-                    robot.FrontLeft.setPower(power);
-                    robot.RearRight.setPower(power);
-                    robot.RearLeft.setPower(power);
-                }
-            }
         }
 
         StopDriving();
-    }
-
-    private void checkOrientation() {
-        // read the orientation of the robot
-        angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        robot.imu.getPosition();
-        // and save the heading
-        currentHeading = angles.firstAngle;
-    }
-
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }
