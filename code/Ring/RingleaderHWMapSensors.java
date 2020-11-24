@@ -7,11 +7,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-
 //This is NOT an OpMode
 
-public class RingleaderHWMap {
+public class RingleaderHWMapSensors {
     /* Public OpMode members. */
     public DcMotor FrontLeft = null;
     public DcMotor FrontRight  = null;
@@ -23,12 +21,17 @@ public class RingleaderHWMap {
 
     public BNO055IMU imu = null;
 
+    public ColorSensor sensorColor = null;
+    public DistanceSensor sensorDistance = null;
+    public DistanceSensor sensorRangeTop = null;
+    public DistanceSensor sensorRangeBottom = null;
+
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public RingleaderHWMap(){
+    public RingleaderHWMapSensors(){
 
     }
 
@@ -47,6 +50,11 @@ public class RingleaderHWMap {
         Elevator = hwMap.dcMotor.get("elevator");
 
         imu = hwMap.get(BNO055IMU.class, "imu");
+
+        sensorColor = hwMap.get(ColorSensor.class, "colorSensor");
+        sensorDistance = hwMap.get(DistanceSensor.class, "colorSensor");
+        sensorRangeTop = hwMap.get(DistanceSensor.class, "rangeSensorTop");
+        sensorRangeBottom = hwMap.get(DistanceSensor.class, "rangeSensorBottom");
 
         FrontLeft.setPower(0);
         FrontRight.setPower(0);

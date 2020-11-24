@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Ring;
+package org.firstinspires.ftc.teamcode.code.Ring;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Season20and21.code.HeadingHolder;
+import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMap;
 
 @TeleOp(name = "RingleaderV1", group = "Test")
 public class RingleaderV1 extends OpMode {
@@ -27,8 +28,6 @@ public class RingleaderV1 extends OpMode {
     boolean backCheck = true;
     boolean expert = false;
     boolean expertCheck = true;
-    //boolean checkingOrientation = false;
-    //boolean rightStickReleased = true;
     double targetHeading = 0;
     double currentHeading = 0;
     int targetChanging = 90;
@@ -75,15 +74,6 @@ public class RingleaderV1 extends OpMode {
         telemetry.addLine("Dual Mode: "+dualMode);
         if(dualMode && expert){
             checkOrientation();
-            /*if (checkingOrientation) {
-                checkOrientation();
-            }
-            if (gamepad1.right_stick_button && rightStickReleased) {
-                checkingOrientation = !checkingOrientation;
-                rightStickReleased = false;
-            } else if (!gamepad1.right_stick_button) {
-                rightStickReleased = true;
-            }*/
             telemetry.addLine("Power is at: " + power);
             telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
@@ -117,9 +107,9 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad2.right_trigger > 0) {
-                robot.Elevator.setPower(1);
-            } else if (gamepad2.left_trigger > 0) {
                 robot.Elevator.setPower(-1);
+            } else if (gamepad2.left_trigger > 0) {
+                robot.Elevator.setPower(1);
             } else {
                 robot.Elevator.setPower(0);
             }
@@ -202,15 +192,6 @@ public class RingleaderV1 extends OpMode {
         }
         else if(expert){
             checkOrientation();
-            /*if (checkingOrientation) {
-                checkOrientation();
-            }
-            if (gamepad1.right_stick_button && rightStickReleased) {
-                checkingOrientation = !checkingOrientation;
-                rightStickReleased = false;
-            } else if (!gamepad1.right_stick_button) {
-                rightStickReleased = true;
-            }*/
             telemetry.addLine("Power is at: " + power);
             telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
@@ -244,9 +225,9 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad1.right_trigger > 0) {
-                robot.Elevator.setPower(1);
-            } else if (gamepad1.left_trigger > 0) {
                 robot.Elevator.setPower(-1);
+            } else if (gamepad1.left_trigger > 0) {
+                robot.Elevator.setPower(1);
             } else {
                 robot.Elevator.setPower(0);
             }
@@ -333,7 +314,7 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad2.right_trigger > 0 || gamepad2.left_trigger > 0) {
-                robot.Elevator.setPower(1);
+                robot.Elevator.setPower(-1);
             }
             else {
                 robot.Elevator.setPower(0);
@@ -382,7 +363,7 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad1.right_trigger > 0 || gamepad1.left_trigger > 0) {
-                robot.Elevator.setPower(1);
+                robot.Elevator.setPower(-1);
             }
             else {
                 robot.Elevator.setPower(0);

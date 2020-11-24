@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Ring.AutonomousRing;
+package org.firstinspires.ftc.teamcode.code.Ring.AutonomousRing;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Season20and21.code.HeadingHolder;
-import org.firstinspires.ftc.teamcode.Season20and21.code.Ring.RingleaderHWMap;
+import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMapSensors;
 
 @Autonomous(name = "RingAutonomousDropoffV1", group = "Concept")
 public class RingAutonomousDropoffV1 extends LinearOpMode {
@@ -32,7 +32,7 @@ public class RingAutonomousDropoffV1 extends LinearOpMode {
 
     Orientation angles;
 
-    RingleaderHWMap robot = new RingleaderHWMap();
+    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
 
     @Override
     public void runOpMode() {

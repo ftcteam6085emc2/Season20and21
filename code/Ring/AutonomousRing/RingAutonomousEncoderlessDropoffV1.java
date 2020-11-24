@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Ring.AutonomousRing;
+package org.firstinspires.ftc.teamcode.code.Ring.AutonomousRing;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -11,9 +11,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.Season20and21.code.Ring.RingleaderHWMap;
+import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMapSensors;
+import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMapSensors;
 
-@Autonomous(name = "RingAutonomousDropoffV1", group = "Concept")
+@Autonomous(name = "RingAutonomousEncoderlessDropoffV1", group = "Concept")
 public class RingAutonomousEncoderlessDropoffV1 extends LinearOpMode {
     int tZone = 0;
     int averageCount1 = 0;
@@ -21,7 +22,7 @@ public class RingAutonomousEncoderlessDropoffV1 extends LinearOpMode {
     int averageCount3 = 0;
     boolean whiteDetected = false;
 
-    RingleaderHWMap robot = new RingleaderHWMap();
+    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
 
     @Override
     public void runOpMode() {
