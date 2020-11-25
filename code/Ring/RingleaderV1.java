@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.code.Ring;
+package org.firstinspires.ftc.Season20and21.code.Ring;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Season20and21.code.HeadingHolder;
-import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMap;
 
 @TeleOp(name = "RingleaderV1", group = "Test")
 public class RingleaderV1 extends OpMode {
@@ -28,8 +27,17 @@ public class RingleaderV1 extends OpMode {
     boolean backCheck = true;
     boolean expert = false;
     boolean expertCheck = true;
+    boolean collectorCheck = true;
+    boolean launcherCheck = true;
+    boolean servoCheck = true;
     double targetHeading = 0;
     double currentHeading = 0;
+    int a = 0;
+    int b = 0;
+    int x = 0;
+    int y = 0;
+    int leftBumper = 0;
+    int rightBumper = 0;
     int targetChanging = 90;
     double autoHeading = HeadingHolder.getHeading();
 
@@ -202,25 +210,82 @@ public class RingleaderV1 extends OpMode {
             robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
-            if (gamepad1.right_bumper) {   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
-                robot.Collector.setPower(0);
-            } else if (gamepad1.b) {
-                robot.Collector.setPower(1);
-            } else if (gamepad1.x) {
-                robot.Collector.setPower(-1);
+            if(gamepad1.right_bumper && servoCheck){
+                robot.ServoElevate.setPower(1);
+                rightBumper++;
+                if(rightBumper > 1){
+                    robot.ServoElevate.setPower(0);
+                    rightBumper = 0;
+                }
+                leftBumper = 0;
+                servoCheck = false;
+            }
+            else if (gamepad1.left_bumper && servoCheck){
+                robot.ServoElevate.setPower(-1);
+                leftBumper++;
+                if(leftBumper > 1){
+                    robot.ServoElevate.setPower(0);
+                    leftBumper = 0;
+                }
+                rightBumper = 0;
+                servoCheck = false;
+            }
+            else if (!(gamepad1.right_bumper || gamepad1.left_bumper)){
+                servoCheck = true;
             }
 
-            if (gamepad1.left_bumper) {
-                robot.Launcher.setPower(0);
-                spinning = false;
-            } else if (gamepad1.y) {
-                robot.Launcher.setPower(Math.abs(power));
-                spinning = true;
-            } else if (gamepad1.a) {
-                robot.Launcher.setPower(-Math.abs(power));
-                spinning = true;
+            //if (gamepad1.right_bumper) {   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
+                //robot.Collector.setPower(0);
+            //}
+
+            if (gamepad1.b && collectorCheck) {
+                robot.Collector.setPower(1);
+                b++;
+                if(b > 1){
+                    robot.Collector.setPower(0);
+                    b = 0;
+                }
+                x = 0;
+                collectorCheck = false;
+            } else if (gamepad1.x && collectorCheck) {
+                robot.Collector.setPower(-1);
+                x++;
+                if(x > 1){
+                    robot.Collector.setPower(0);
+                    x = 0;
+                }
+                b = 0;
+                collectorCheck = false;
+            } else if(!(gamepad1.b || gamepad1.x)){
+                collectorCheck = true;
             }
-            if (spinning) {
+
+            //if (gamepad1.left_bumper) {
+              //  robot.Launcher.setPower(0);
+                //spinning = false;
+            //}
+            if (gamepad1.y && launcherCheck) {
+                robot.Launcher.setPower(Math.abs(power));
+                y++;
+                if(y > 1){
+                    robot.Launcher.setPower(0);
+                    y = 0;
+                }
+                a = 0;
+                launcherCheck = false;
+            } else if (gamepad1.a && launcherCheck) {
+                robot.Launcher.setPower(-Math.abs(power));
+                a++;
+                if(a > 1){
+                    robot.Launcher.setPower(0);
+                    a = 0;
+                }
+                y = 0;
+                launcherCheck = false;
+            } else if (!(gamepad1.a || gamepad1.y)){
+                launcherCheck = true;
+            }
+            if (a > 0 || y > 0) {
                 telemetry.addLine(6000 * power + " RPM!");
             }
 
