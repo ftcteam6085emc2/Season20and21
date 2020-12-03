@@ -92,7 +92,7 @@ public class RingleaderV1 extends OpMode {
             robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
             if(gamepad2.right_bumper && servoCheck){
-                robot.ServoElevate.setPower(1);
+                robot.ServoElevate.setPower(-1);
                 rightBumper++;
                 if(rightBumper > 1){
                     robot.ServoElevate.setPower(0);
@@ -102,7 +102,7 @@ public class RingleaderV1 extends OpMode {
                 servoCheck = false;
             }
             else if (gamepad2.left_bumper && servoCheck){
-                robot.ServoElevate.setPower(-1);
+                robot.ServoElevate.setPower(1);
                 leftBumper++;
                 if(leftBumper > 1){
                     robot.ServoElevate.setPower(0);
@@ -163,9 +163,9 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad2.right_trigger > 0) {
-                robot.Elevator.setPower(-1);
-            } else if (gamepad2.left_trigger > 0) {
                 robot.Elevator.setPower(1);
+            } else if (gamepad2.left_trigger > 0) {
+                robot.Elevator.setPower(-1);
             } else {
                 robot.Elevator.setPower(0);
             }
@@ -259,7 +259,7 @@ public class RingleaderV1 extends OpMode {
             robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
             if(gamepad1.right_bumper && servoCheck){
-                robot.ServoElevate.setPower(1);
+                robot.ServoElevate.setPower(-1);
                 rightBumper++;
                 if(rightBumper > 1){
                     robot.ServoElevate.setPower(0);
@@ -269,7 +269,7 @@ public class RingleaderV1 extends OpMode {
                 servoCheck = false;
             }
             else if (gamepad1.left_bumper && servoCheck){
-                robot.ServoElevate.setPower(-1);
+                robot.ServoElevate.setPower(1);
                 leftBumper++;
                 if(leftBumper > 1){
                     robot.ServoElevate.setPower(0);
@@ -338,9 +338,9 @@ public class RingleaderV1 extends OpMode {
             }
 
             if (gamepad1.right_trigger > 0) {
-                robot.Elevator.setPower(-1);
-            } else if (gamepad1.left_trigger > 0) {
                 robot.Elevator.setPower(1);
+            } else if (gamepad1.left_trigger > 0) {
+                robot.Elevator.setPower(-1);
             } else {
                 robot.Elevator.setPower(0);
             }
@@ -409,38 +409,50 @@ public class RingleaderV1 extends OpMode {
             robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
-            if (gamepad2.right_bumper || gamepad2.left_bumper) {
-                robot.ServoElevate.setPower(1);
+            if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
+                robot.ServoElevate.setPower(-1);
                 rightBumper++;
                 if(rightBumper > 1){
                     robot.ServoElevate.setPower(0);
                     rightBumper = 0;
                 }
+                servoCheck = false;
+            }
+            else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
+                servoCheck = true;
             }
 
-            if (gamepad2.b || gamepad2.x) {
+            if ((gamepad2.b || gamepad2.x) && collectorCheck) {
                 robot.Collector.setPower(1);
                 b++;
                 if(b > 1){
                     robot.Collector.setPower(0);
                     b = 0;
                 }
+                collectorCheck = false;
+            }
+            else if (!(gamepad2.b || gamepad2.x)){
+                collectorCheck = true;
             }
 
-            if (gamepad2.y || gamepad2.a) {
+            if ((gamepad2.y || gamepad2.a) && launcherCheck) {
                 robot.Launcher.setPower(Math.abs(power));
                 y++;
                 if(y > 1){
                     robot.Launcher.setPower(0);
                     y = 0;
                 }
+                launcherCheck = false;
+            }
+            else if (!(gamepad2.y || gamepad2.a)){
+                launcherCheck = true;
             }
             if (y == 1) {
                 telemetry.addLine(6000 * power + " RPM!");
             }
 
             if (gamepad2.right_trigger > 0 || gamepad2.left_trigger > 0) {
-                robot.Elevator.setPower(-1);
+                robot.Elevator.setPower(1);
             }
             else {
                 robot.Elevator.setPower(0);
@@ -471,35 +483,48 @@ public class RingleaderV1 extends OpMode {
             robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
 
-            if (gamepad2.right_bumper || gamepad2.left_bumper) {
-                robot.ServoElevate.setPower(1);
+            if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
+                robot.ServoElevate.setPower(-1);
                 rightBumper++;
                 if(rightBumper > 1){
                     robot.ServoElevate.setPower(0);
                     rightBumper = 0;
                 }
+                servoCheck = false;
+            }
+            else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
+                servoCheck = true;
             }
 
-            if (gamepad2.b || gamepad2.x) {
+
+            if ((gamepad2.b || gamepad2.x) && collectorCheck) {
                 robot.Collector.setPower(1);
                 b++;
                 if(b > 1){
                     robot.Collector.setPower(0);
                     b = 0;
                 }
+                collectorCheck = false;
+            }
+            else if (!(gamepad2.b || gamepad2.x)){
+                collectorCheck = true;
             }
 
-            if (gamepad2.y || gamepad2.a) {
+            if ((gamepad2.y || gamepad2.a) && launcherCheck) {
                 robot.Launcher.setPower(Math.abs(power));
                 y++;
-                if(y > 1){
+                if (y > 1) {
                     robot.Launcher.setPower(0);
                     y = 0;
                 }
+                launcherCheck = false;
+            }
+            else if (!(gamepad2.y || gamepad2.a)){
+                launcherCheck = true;
             }
 
             if (gamepad1.right_trigger > 0 || gamepad1.left_trigger > 0) {
-                robot.Elevator.setPower(-1);
+                robot.Elevator.setPower(1);
             }
             else {
                 robot.Elevator.setPower(0);

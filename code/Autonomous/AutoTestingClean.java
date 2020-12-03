@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Autonomous;
+package org.firstinspires.ftc.Season20and21.code.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

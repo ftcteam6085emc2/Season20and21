@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.Autonomous;
+package org.firstinspires.ftc.Season20and21.code.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
