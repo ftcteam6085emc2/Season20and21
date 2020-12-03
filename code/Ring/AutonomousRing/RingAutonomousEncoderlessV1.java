@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.code.Ring.AutonomousRing;
+package org.firstinspires.ftc.Season20and21.code.Ring.AutonomousRing;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensors;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.teamcode.code.Ring.RingleaderHWMapSensors;
 
 @Autonomous(name = "RingAutonomousEncoderlessV1", group = "Concept")
 public class RingAutonomousEncoderlessV1 extends LinearOpMode {
