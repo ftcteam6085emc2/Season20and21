@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensors;
+import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -32,7 +33,7 @@ public class RingAutonomousDropoffV1 extends LinearOpMode {
 
     Orientation angles;
 
-    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
+    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
 
     @Override
     public void runOpMode() {

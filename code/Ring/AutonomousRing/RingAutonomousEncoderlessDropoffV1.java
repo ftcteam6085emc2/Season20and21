@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensors;
+import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -21,7 +22,7 @@ public class RingAutonomousEncoderlessDropoffV1 extends LinearOpMode {
     int averageCount3 = 0;
     boolean whiteDetected = false;
 
-    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
+    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
 
     @Override
     public void runOpMode() {
