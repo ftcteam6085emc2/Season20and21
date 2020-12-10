@@ -59,6 +59,8 @@ public class RingleaderV1 extends OpMode {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         robot.imu.initialize(parameters);
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        checkOrientation();
+        autoHeading -= currentHeading;
     }
 
     @Override
@@ -553,7 +555,7 @@ public class RingleaderV1 extends OpMode {
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         robot.imu.getPosition();
         // and save the heading
-        currentHeading = angles.firstAngle; //+ autoHeading;
+        currentHeading = angles.firstAngle + autoHeading;
     }
 
     private void DriveStraight(double power) {
