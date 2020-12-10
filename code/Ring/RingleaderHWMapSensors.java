@@ -2,6 +2,7 @@ package org.firstinspires.ftc.Season20and21.code.Ring;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 //import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -17,6 +18,8 @@ public class RingleaderHWMapSensors {
     public DcMotor Collector  = null;
     public DcMotor Launcher  = null;
     public DcMotor Elevator = null;
+
+    public CRServo ServoElevate = null;
 
     public BNO055IMU imu = null;
 
@@ -43,6 +46,8 @@ public class RingleaderHWMapSensors {
         Collector = hwMap.dcMotor.get("collector");
         Launcher = hwMap.dcMotor.get("launcher");
         Elevator = hwMap.dcMotor.get("elevator");
+
+        ServoElevate = hwMap.crservo.get("Servo");
 
         imu = hwMap.get(BNO055IMU.class, "imu");
 

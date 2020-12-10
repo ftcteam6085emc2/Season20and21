@@ -79,8 +79,8 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.Collector.setPower(0.5);
         sleep(500);
         robot.Collector.setPower(0);
-        DriveStraightDistance(800,0.8);
-        DriveStraightDistanceSquared(800, 0.4);
+        DriveStraightDistance(1200,0.8);
+        DriveStraightDistanceSquared(400, 0.4);
         Strafe(900, 0.6);
         DriveStraightDistance(2000, 0.8);
         DriveStraightDistance(500, 0.4); //was color
@@ -178,15 +178,15 @@ public class RingAutonomousV1 extends LinearOpMode {
             checkOrientation();
             if(distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 1.1);
-                    robot.FrontLeft.setPower(power * 0.9);
-                    robot.RearRight.setPower(power * 1.1);
-                    robot.RearLeft.setPower(power * 0.9);
-                } else if (currentHeading < targetHeading - 1) {
                     robot.FrontRight.setPower(power * 0.9);
                     robot.FrontLeft.setPower(power * 1.1);
                     robot.RearRight.setPower(power * 0.9);
                     robot.RearLeft.setPower(power * 1.1);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 0.9);
                 } else {
                     robot.FrontRight.setPower(power);
                     robot.FrontLeft.setPower(power);
@@ -196,15 +196,15 @@ public class RingAutonomousV1 extends LinearOpMode {
             }
             else{
                 if (currentHeading > targetHeading + 1) {
-                    robot.FrontRight.setPower(power * 0.9);
-                    robot.FrontLeft.setPower(power * 1.1);
-                    robot.RearRight.setPower(power * 0.9);
-                    robot.RearLeft.setPower(power * 1.1);
-                } else if (currentHeading < targetHeading - 1) {
                     robot.FrontRight.setPower(power * 1.1);
                     robot.FrontLeft.setPower(power * 0.9);
                     robot.RearRight.setPower(power * 1.1);
                     robot.RearLeft.setPower(power * 0.9);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 1.1);
                 } else {
                     robot.FrontRight.setPower(power);
                     robot.FrontLeft.setPower(power);
@@ -229,10 +229,10 @@ public class RingAutonomousV1 extends LinearOpMode {
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
-            if(robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 25){
+            if(robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 14){
                 averageCount3++;
             }
-            else if (robot.sensorRangeBottom.getDistance(DistanceUnit.CM) < 25){
+            else if (robot.sensorRangeBottom.getDistance(DistanceUnit.CM) < 14){
                 averageCount2++;
             }
             else {
