@@ -88,19 +88,20 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                 telemetry.addLine("There are 0 rings in the stack");
                 telemetry.update();
                 robot.Collector.setPower(0.5);
-                sleep(3000);
+                sleep(5000);
                 robot.Collector.setPower(0);
+                DriveStraightDistance(-200, 0.8);
                 Strafe(-1300, 0.6);
-                Turn(3000, 0.8);
+                Turn(2800, 0.8);
                 robot.Launcher.setPower(0.7);
                 sleep(500);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
                 sleep(1000);
-                Strafe(1300, 0.6);
+                Strafe(500, 0.6);
                 sleep(1000);
-                Turn(3000, 0.8);
-                Strafe(2600, 0.6);
+                Turn(2800, 0.8);
+                Strafe(1800, 0.6);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
                 }
@@ -113,20 +114,19 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                 DriveStraightDistance(1000, 0.8);
                 Strafe(-1300, -0.6);
                 robot.Collector.setPower(0.5);
-                sleep(3000);
+                sleep(5000);
                 robot.Collector.setPower(0);
-                DriveStraightDistance(-200, 0.8);
-                Turn(3000, 0.8);
+                DriveStraightDistance(-1500, 0.8);
+                Turn(2800, 0.8);
                 robot.Launcher.setPower(0.7);
                 sleep(2000);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
                 sleep(1000);
-                Strafe(1300, 0.6);
-                sleep(1000);
-                Turn(3000, 0.8);
-                Strafe(2600, 0.6);
-                Strafe(1300, 0.6);
+                Strafe(500, 0.6);
+                sleep(3000);
+                Turn(2800, 0.8);
+                Strafe(1600, 0.6);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
                     DriveStraight(0.4);
                 }*/
@@ -138,24 +138,25 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                 telemetry.update();
                 DriveStraightDistance(2500, 0.8);
                 robot.Collector.setPower(0.5);
-                sleep(3000);
+                sleep(5000);
                 robot.Collector.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 60  && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 0cm - 60cm
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
                 DriveStraightDistance(-3000, 0.8);
-                Strafe(-1300, 0.6);
-                Turn(3000, 0.8);
+                Strafe(-1000, 0.6);
+                Turn(2800, 0.8);
                 robot.Launcher.setPower(0.7);
-                sleep(500);
+                sleep(1000);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
                 sleep(1000);
-                Strafe(1300, 0.6);
-                sleep(1000);
-                Turn(3000, 0.8);
-                Strafe(2600, 0.6);
+                Strafe(500, 0.6);
+                sleep(3000);
+                robot.Launcher.setPower(0);
+                Turn(2800, 0.8);
+                Strafe(1500, 0.6);
                 DriveStraightDistance(-3500, 0.8);
         }
 

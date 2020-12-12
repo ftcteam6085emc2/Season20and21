@@ -19,7 +19,7 @@ public class RingleaderV1 extends OpMode {
 
     RingleaderHWMap robot = new RingleaderHWMap();
     double power = 0.5;
-    boolean dualMode = false;
+    boolean dualMode = true;
     boolean powerIncrement = true;
     boolean leftCheck = true;
     boolean rightCheck = true;
@@ -29,6 +29,7 @@ public class RingleaderV1 extends OpMode {
     boolean collectorCheck = true;
     boolean launcherCheck = true;
     boolean servoCheck = true;
+    boolean powerUpdate = false;
     double targetHeading = 0;
     double currentHeading = 0;
     int a = 0;
@@ -90,8 +91,8 @@ public class RingleaderV1 extends OpMode {
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
             if(gamepad2.right_bumper && servoCheck){
                 robot.ServoElevate.setPower(-1);
@@ -113,7 +114,7 @@ public class RingleaderV1 extends OpMode {
                 rightBumper = 0;
                 servoCheck = false;
             }
-            else if (!(gamepad1.right_bumper || gamepad1.left_bumper)){
+            else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
             }
 
@@ -138,7 +139,10 @@ public class RingleaderV1 extends OpMode {
             } else if(!(gamepad2.b || gamepad2.x)){
                 collectorCheck = true;
             }
-
+            if(powerUpdate){
+                robot.Launcher.setPower(Math.abs(power));
+                powerUpdate = false;
+            }
             if (gamepad2.y && launcherCheck) {
                 robot.Launcher.setPower(Math.abs(power));
                 y++;
@@ -178,12 +182,18 @@ public class RingleaderV1 extends OpMode {
                     power = 0.1;   // Also there's a 15-30 degree angle to the right that the rings will travel
                 }
                 powerIncrement = false;
+                if(robot.Launcher.isBusy()){
+                    powerUpdate = true;
+                }
             } else if (gamepad2.dpad_up && powerIncrement) {   //After more testing I will change all of these to +/- the difference between the goals
                 power += 0.1;
                 if (power > 1) {
                     power = 1;
                 }
                 powerIncrement = false;
+                if(robot.Launcher.isBusy()){
+                    powerUpdate = true;
+                }
             } else if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
                 powerIncrement = true;
             }
@@ -236,16 +246,16 @@ public class RingleaderV1 extends OpMode {
             }
 
             if(gamepad1.right_bumper){
-                Strafe(100, 1);
+                Strafe(250, 1);
             }
             else if(gamepad1.left_bumper){
-                Strafe(-100, 1);
+                Strafe(-250, 1);
             }
             else if(gamepad1.right_trigger > 0){
-                Strafe(100, 0.5);
+                Strafe(100, 1);
             }
             else if(gamepad1.left_trigger > 0){
-                Strafe(-100, 0.5);
+                Strafe(-100, 1);
             }
         }
         else if(expert){
@@ -257,8 +267,8 @@ public class RingleaderV1 extends OpMode {
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
             if(gamepad1.right_bumper && servoCheck){
                 robot.ServoElevate.setPower(-1);
@@ -408,8 +418,8 @@ public class RingleaderV1 extends OpMode {
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
             if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
                 robot.ServoElevate.setPower(-1);
@@ -482,8 +492,8 @@ public class RingleaderV1 extends OpMode {
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
+            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
             if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
                 robot.ServoElevate.setPower(-1);
@@ -569,16 +579,16 @@ public class RingleaderV1 extends OpMode {
         DriveStraight(0);
     }
 
-    private void Strafe(int distance, double power) {
-        telemetry.update();
-
-        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() - distance);
-        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
-        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
-        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
-
-        DriveStraight(power);
-        while (robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) {}
+    private void Strafe(int time, double power) {
+        robot.FrontRight.setPower(power);
+        robot.FrontLeft.setPower(-power);
+        robot.RearRight.setPower(-power);
+        robot.RearLeft.setPower(power);
+        try {
+            wait(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         StopDriving();
     }
 }
