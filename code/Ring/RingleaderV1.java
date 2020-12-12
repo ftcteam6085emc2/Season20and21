@@ -30,6 +30,7 @@ public class RingleaderV1 extends OpMode {
     boolean launcherCheck = true;
     boolean servoCheck = true;
     boolean powerUpdate = false;
+    boolean startCheck = true;
     double targetHeading = 0;
     double currentHeading = 0;
     int a = 0;
@@ -38,6 +39,7 @@ public class RingleaderV1 extends OpMode {
     int y = 0;
     int leftBumper = 0;
     int rightBumper = 0;
+    int start = 0;
     int targetChanging = 90;
     double autoHeading = HeadingHolder.getHeading();
 
@@ -117,6 +119,13 @@ public class RingleaderV1 extends OpMode {
             else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
             }
+            /*if (gamepad2.right_bumper) {
+                robot.ServoElevate.setPower(-1);
+            } else if (gamepad2.left_bumper) {
+                robot.ServoElevate.setPower(1);
+            } else {
+                robot.ServoElevate.setPower(0);
+            }*/
 
             if (gamepad2.b && collectorCheck) {
                 robot.Collector.setPower(1);
@@ -153,7 +162,7 @@ public class RingleaderV1 extends OpMode {
                 a = 0;
                 launcherCheck = false;
             } else if (gamepad2.a && launcherCheck) {
-                robot.Launcher.setPower(-Math.abs(power));
+                robot.Launcher.setPower(-Math.abs(power)); // 1 sec for collector, 2 sec start up for launcher, 0.70 for elevator
                 a++;
                 if(a > 1){
                     robot.Launcher.setPower(0);
@@ -161,7 +170,7 @@ public class RingleaderV1 extends OpMode {
                 }
                 y = 0;
                 launcherCheck = false;
-            } else if (!(gamepad1.a || gamepad1.y)){
+            } else if (!(gamepad2.a || gamepad2.y)){
                 launcherCheck = true;
             }
             if (a > 0 || y > 0) {
@@ -172,7 +181,7 @@ public class RingleaderV1 extends OpMode {
                 robot.Elevator.setPower(1);
             } else if (gamepad2.left_trigger > 0) {
                 robot.Elevator.setPower(-1);
-            } else {
+            } else if (start != 1){
                 robot.Elevator.setPower(0);
             }
 
@@ -182,7 +191,7 @@ public class RingleaderV1 extends OpMode {
                     power = 0.1;   // Also there's a 15-30 degree angle to the right that the rings will travel
                 }
                 powerIncrement = false;
-                if(robot.Launcher.isBusy()){
+                if(robot.Launcher.getPower() > 0){
                     powerUpdate = true;
                 }
             } else if (gamepad2.dpad_up && powerIncrement) {   //After more testing I will change all of these to +/- the difference between the goals
@@ -191,14 +200,23 @@ public class RingleaderV1 extends OpMode {
                     power = 1;
                 }
                 powerIncrement = false;
-                if(robot.Launcher.isBusy()){
+                if(robot.Launcher.getPower() > 0){
                     powerUpdate = true;
                 }
             } else if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
                 powerIncrement = true;
             }
 
-            if (gamepad2.dpad_left && leftCheck) {
+            if(gamepad2.dpad_right){
+                power = 0.8;
+                powerUpdate = true;
+            }
+            else if(gamepad2.dpad_left){
+                power = 0.7;
+                powerUpdate = true;
+            }
+
+            if (gamepad1.dpad_left && leftCheck) {
                 if (targetChanging == 90) {
                     targetChanging /= 2;
                 } else {
@@ -206,33 +224,55 @@ public class RingleaderV1 extends OpMode {
                 }
                 leftCheck = false;
             }
-            else if (!gamepad2.dpad_left){
+            else if (!gamepad1.dpad_left){
                 leftCheck = true;
             }
 
-            if (gamepad2.dpad_right && rightCheck) {
-                targetHeading -= targetChanging;
-                if (targetHeading == -360 || targetHeading == 360) {
-                    targetHeading = 0;
+            if (gamepad1.dpad_right && rightCheck) {
+                targetHeading += targetChanging;
+                if (targetHeading == 270) {
+                    targetHeading = -90;
                 }
                 rightCheck = false;
             }
-            else if(!gamepad2.dpad_right){
+            else if(!gamepad1.dpad_right){
                 rightCheck = true;
             }
-            if (gamepad1.start || gamepad2.start) {
+            if (gamepad1.start) {
                 while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
                     checkOrientation();
-                    if (currentHeading < targetHeading + 1) {
-                        robot.FrontRight.setPower(0.5);
-                        robot.FrontLeft.setPower(0.5);
-                        robot.RearRight.setPower(0.5);
-                        robot.RearLeft.setPower(0.5);
+                    if (currentHeading < targetHeading - 90) {
+                        robot.FrontRight.setPower(1);
+                        robot.FrontLeft.setPower(1);
+                        robot.RearRight.setPower(1);
+                        robot.RearLeft.setPower(1);
+                    } else if (currentHeading > targetHeading + 90) {
+                        robot.FrontRight.setPower(-1);
+                        robot.FrontLeft.setPower(-1);
+                        robot.RearRight.setPower(-1);
+                        robot.RearLeft.setPower(-1);
+                    }
+                    else if (currentHeading < targetHeading - 15) {
+                        robot.FrontRight.setPower(0.7);
+                        robot.FrontLeft.setPower(0.7);
+                        robot.RearRight.setPower(0.7);
+                        robot.RearLeft.setPower(0.7);
+                    } else if (currentHeading > targetHeading + 15) {
+                        robot.FrontRight.setPower(-0.7);
+                        robot.FrontLeft.setPower(-0.7);
+                        robot.RearRight.setPower(-0.7);
+                        robot.RearLeft.setPower(-0.7);
+                    }
+                    else if (currentHeading < targetHeading + 1) {
+                        robot.FrontRight.setPower(0.4);
+                        robot.FrontLeft.setPower(0.4);
+                        robot.RearRight.setPower(0.4);
+                        robot.RearLeft.setPower(0.4);
                     } else if (currentHeading > targetHeading - 1) {
-                        robot.FrontRight.setPower(-0.5);
-                        robot.FrontLeft.setPower(-0.5);
-                        robot.RearRight.setPower(-0.5);
-                        robot.RearLeft.setPower(-0.5);
+                        robot.FrontRight.setPower(-0.4);
+                        robot.FrontLeft.setPower(-0.4);
+                        robot.RearRight.setPower(-0.4);
+                        robot.RearLeft.setPower(-0.4);
                     }
                 }
                 robot.FrontRight.setPower(0);
@@ -241,21 +281,25 @@ public class RingleaderV1 extends OpMode {
                 robot.RearLeft.setPower(0);
             }
 
-            if (gamepad2.left_stick_button) {
-                autoHeading = 0;
+            if(gamepad2.start && startCheck){
+                robot.Collector.setPower(1);
+                robot.Elevator.setPower(1);
+                robot.Launcher.setPower(Math.abs(power));
+                start++;
+                if(start > 1){
+                    robot.Collector.setPower(0);
+                    robot.Elevator.setPower(0);
+                    robot.Launcher.setPower(0);
+                    start = 0;
+                }
+                startCheck = false;
+            }
+            else if(!gamepad2.start){
+                startCheck = true;
             }
 
-            if(gamepad1.right_bumper){
-                Strafe(250, 1);
-            }
-            else if(gamepad1.left_bumper){
-                Strafe(-250, 1);
-            }
-            else if(gamepad1.right_trigger > 0){
-                Strafe(100, 1);
-            }
-            else if(gamepad1.left_trigger > 0){
-                Strafe(-100, 1);
+            if (gamepad2.left_stick_button) {
+                autoHeading = 0;
             }
         }
         else if(expert){
@@ -577,18 +621,5 @@ public class RingleaderV1 extends OpMode {
 
     private void StopDriving() {
         DriveStraight(0);
-    }
-
-    private void Strafe(int time, double power) {
-        robot.FrontRight.setPower(power);
-        robot.FrontLeft.setPower(-power);
-        robot.RearRight.setPower(-power);
-        robot.RearLeft.setPower(power);
-        try {
-            wait(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        StopDriving();
     }
 }
