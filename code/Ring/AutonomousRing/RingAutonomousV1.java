@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensors;
+import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -25,6 +26,7 @@ public class RingAutonomousV1 extends LinearOpMode {
     int tZone = 0;
     double targetHeading = 0;
     double currentHeading = 0;
+    double offset = 0;
     int averageCount1 = 0;
     int averageCount2 = 0;
     int averageCount3 = 0;
@@ -32,7 +34,7 @@ public class RingAutonomousV1 extends LinearOpMode {
 
     Orientation angles;
 
-    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
+    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
 
     @Override
     public void runOpMode() {
@@ -70,21 +72,22 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        relativeLayout.post(new Runnable() {
+        /*relativeLayout.post(new Runnable() {
             public void run() {
                 relativeLayout.setBackgroundColor(Color.WHITE);
             }
-        });
+        });*/
 
-        robot.Collector.setPower(0.5);
-        sleep(500);
-        robot.Collector.setPower(0);
-        DriveStraightDistance(1200,0.8);
+        checkOrientation();
+        offset = currentHeading;
+
+        Strafe(-100, 0.6);
+        DriveStraightDistance(1400,0.8);
         DriveStraightDistanceSquared(400, 0.4);
-        Strafe(900, 0.6);
+        Strafe(1200, 0.6);
         DriveStraightDistance(2000, 0.8);
-        DriveStraightDistance(500, 0.4); //was color
-        if(whiteDetected){
+        DriveStraightDistanceColor(1000, 0.4); //was color
+        /*if(whiteDetected){
             relativeLayout.post(new Runnable() {
                 public void run() {
                     relativeLayout.setBackgroundColor(Color.GREEN);
@@ -92,7 +95,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             });
             telemetry.addLine("Mayo Detected");
             telemetry.update();
-        }
+        }*/
 
         if(averageCount1 > averageCount2 && averageCount1 > averageCount3){
             tZone = 1;
@@ -108,46 +111,84 @@ public class RingAutonomousV1 extends LinearOpMode {
             case 1:
                 telemetry.addLine("There are 0 rings in the stack");
                 telemetry.update();
-                robot.Collector.setPower(-0.5);
-                sleep(750);
+                DriveStraightDistance(-300, 0.8);
+                robot.Collector.setPower(0.5);
+                sleep(1000);
                 robot.Collector.setPower(0);
+                DriveStraightDistance(-500, 0.8);
+                Strafe(-1600, 0.6);
+                Turn(2900, 0.8);
+                DriveStraightDistance(-500, 0.8);
+                DriveStraightDistance(500, 0.8);
+                robot.Launcher.setPower(0.7);
+                sleep(1000);
+                robot.ServoElevate.setPower(-1);
+                robot.Elevator.setPower(0.5);
+                sleep(2000);
+                Strafe(500, 0.6);
+                sleep(2000);
+                robot.Launcher.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
-                DriveStraightDistance(-4000, 0.8);
+                DriveStraightDistanceColor(-1000, 0.4);
                 break;
             case 2:
                 telemetry.addLine("There is 1 ring in the stack");
                 telemetry.update();
-                DriveStraightDistance(1000, 0.8);
-                Strafe(-1300, -0.6);
-                robot.Collector.setPower(-0.5);
-                sleep(750);
+                DriveStraightDistance(800, 0.8);
+                Strafe(-1600, -0.6);
+                robot.Collector.setPower(0.5);
+                sleep(1000);
                 robot.Collector.setPower(0);
-                DriveStraightDistance(-200, 0.8);
-                Strafe(1350, 0.6);
+                DriveStraightDistanceColor(-1250, 0.8);
+                DriveStraightDistance(-250, 0.8);
+                Turn(2900, 0.8);
+                DriveStraightDistance(-500, 0.8);
+                DriveStraightDistance(500, 0.8);
+                robot.Launcher.setPower(0.7);
+                sleep(1000);
+                robot.ServoElevate.setPower(-1);
+                robot.Elevator.setPower(0.5);
+                sleep(2000);
+                Strafe(500, 0.6);
+                sleep(2000);
+                robot.Launcher.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
                     DriveStraight(0.4);
-                }*/
-                StopDriving();
-                DriveStraightDistance(-5500, 0.8);
+                }
+                StopDriving();*/
+                DriveStraightDistanceColor(-1000, 0.4);
                 break;
             case 3:
                 telemetry.addLine("There are 4 rings in the stack");
                 telemetry.update();
                 DriveStraightDistance(2500, 0.8);
-                robot.Collector.setPower(-0.5);
-                sleep(750);
+                robot.Collector.setPower(0.5);
+                sleep(1000);
                 robot.Collector.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 60  && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 0cm - 60cm
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
-                DriveStraightDistance(-7000, 0.8);
+                DriveStraightDistanceColor(-3000, 0.8);
+                DriveStraightDistance(-250, 0.8);
+                Strafe(-1600, 0.6);
+                Turn(2900, 0.8);
+                DriveStraightDistance(-500, 0.8);
+                DriveStraightDistance(500, 0.8);
+                robot.Launcher.setPower(0.7);
+                sleep(1000);
+                robot.ServoElevate.setPower(-1);
+                robot.Elevator.setPower(0.5);
+                robot.Collector.setPower(1);
+                sleep(2000);
+                Strafe(500, 0.6);
+                sleep(2000);
+                robot.Launcher.setPower(0);
+                DriveStraightDistanceColor(-1000, 0.4);
         }
-
-        Strafe(-900, 0.6);
         checkOrientation();
         HeadingHolder.setHeading(currentHeading);
     }
@@ -243,27 +284,6 @@ public class RingAutonomousV1 extends LinearOpMode {
         StopDriving();
     }
 
-    /*private void DriveStraightDistanceColor(int distance, double power) {
-        telemetry.update();
-
-        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() - distance);
-        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
-        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() - distance);
-        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
-
-        DriveStraight(power);
-        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
-            idle();
-
-            if(robot.sensorColor.alpha() >= 2500){
-                whiteDetected = true;
-                break;
-            }
-        }
-
-        StopDriving();
-    }*/
-
     private void Strafe(int distance, double power) {
         telemetry.update();
 
@@ -318,11 +338,48 @@ public class RingAutonomousV1 extends LinearOpMode {
         StopDriving();
     }
 
+    private void DriveStraightDistanceColor(int distance, double power) {
+        telemetry.update();
+
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
+
+        DriveStraight(power);
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
+            idle();
+
+            if(robot.sensorColor.alpha() >= 800){
+                whiteDetected = true;
+                telemetry.addLine("White Line Detected!");
+                telemetry.update();
+                break;
+            }
+        }
+
+        StopDriving();
+    }
+
+    private void Turn(int distance, double power) {
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
+
+        DriveStraight(power);
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
+            idle();
+        }
+
+        StopDriving();
+    }
+
     private void checkOrientation() {
         // read the orientation of the robot
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         robot.imu.getPosition();
         // and save the heading
-        currentHeading = angles.firstAngle;
+        currentHeading = angles.firstAngle - offset;
     }
 }

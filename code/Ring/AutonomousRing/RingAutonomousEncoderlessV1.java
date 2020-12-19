@@ -106,7 +106,7 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
-                DriveStraightDistance(750, 0.8);
+                DriveStraightDistance(-750, 0.8);
                 break;
             case 2:
                 telemetry.addLine("There is 1 ring in the stack");
@@ -131,7 +131,7 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
-                DriveStraightDistance(750, 0.8);
+                DriveStraightDistance(-750, 0.8);
                 break;
             case 3:
                 telemetry.addLine("There are 4 rings in the stack");
@@ -157,7 +157,7 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
                 sleep(5000);
                 robot.Launcher.setPower(0);
                 Turn(2800, 0.8);
-                DriveStraightDistance(750, 0.8);
+                DriveStraightDistance(-750, 0.8);
         }
     }
 

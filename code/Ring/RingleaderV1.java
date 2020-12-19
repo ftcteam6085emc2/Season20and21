@@ -17,7 +17,7 @@ import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
 @TeleOp(name = "RingleaderV1", group = "Test")
 public class RingleaderV1 extends OpMode {
 
-    RingleaderHWMap robot = new RingleaderHWMap();
+    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
     double power = 0.5;
     boolean dualMode = true;
     boolean powerIncrement = true;
@@ -31,6 +31,7 @@ public class RingleaderV1 extends OpMode {
     boolean servoCheck = true;
     boolean powerUpdate = false;
     boolean startCheck = true;
+    boolean leftStickCheck = true;
     double targetHeading = 0;
     double currentHeading = 0;
     int a = 0;
@@ -63,7 +64,6 @@ public class RingleaderV1 extends OpMode {
         robot.imu.initialize(parameters);
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         checkOrientation();
-        autoHeading -= currentHeading;
     }
 
     @Override
@@ -75,6 +75,8 @@ public class RingleaderV1 extends OpMode {
         else if(!gamepad1.back){
             backCheck = true;
         }
+
+        telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha());
 
         if(gamepad1.right_stick_button && expertCheck){
             expert = !expert;
@@ -230,7 +232,7 @@ public class RingleaderV1 extends OpMode {
 
             if (gamepad1.dpad_right && rightCheck) {
                 targetHeading += targetChanging;
-                if (targetHeading == 270) {
+                if(targetHeading == 270) {
                     targetHeading = -90;
                 }
                 rightCheck = false;
@@ -239,40 +241,54 @@ public class RingleaderV1 extends OpMode {
                 rightCheck = true;
             }
             if (gamepad1.start) {
-                while (!(currentHeading < targetHeading + 1 && currentHeading > targetHeading - 1)) {
+                while ((!(currentHeading < targetHeading + 0.25 && currentHeading > targetHeading - 0.25)) || (targetHeading == 180 && (currentHeading < -178 || currentHeading > 178))) {
                     checkOrientation();
-                    if (currentHeading < targetHeading - 90) {
+                    if(currentHeading < -170 && targetHeading == 180){
+                        robot.FrontRight.setPower(-0.1);
+                        robot.FrontLeft.setPower(-0.1);
+                        robot.RearRight.setPower(-0.1);
+                        robot.RearLeft.setPower(-0.1);
+                    }
+                    else if (currentHeading < targetHeading - 45) {
                         robot.FrontRight.setPower(1);
                         robot.FrontLeft.setPower(1);
                         robot.RearRight.setPower(1);
                         robot.RearLeft.setPower(1);
-                    } else if (currentHeading > targetHeading + 90) {
+                    } else if (currentHeading > targetHeading + 45) {
                         robot.FrontRight.setPower(-1);
                         robot.FrontLeft.setPower(-1);
                         robot.RearRight.setPower(-1);
                         robot.RearLeft.setPower(-1);
-                    }
-                    else if (currentHeading < targetHeading - 15) {
-                        robot.FrontRight.setPower(0.7);
-                        robot.FrontLeft.setPower(0.7);
-                        robot.RearRight.setPower(0.7);
-                        robot.RearLeft.setPower(0.7);
+                    } else if (currentHeading < targetHeading - 15) {
+                        robot.FrontRight.setPower(0.5);
+                        robot.FrontLeft.setPower(0.5);
+                        robot.RearRight.setPower(0.5);
+                        robot.RearLeft.setPower(0.5);
                     } else if (currentHeading > targetHeading + 15) {
-                        robot.FrontRight.setPower(-0.7);
-                        robot.FrontLeft.setPower(-0.7);
-                        robot.RearRight.setPower(-0.7);
-                        robot.RearLeft.setPower(-0.7);
-                    }
-                    else if (currentHeading < targetHeading + 1) {
-                        robot.FrontRight.setPower(0.4);
-                        robot.FrontLeft.setPower(0.4);
-                        robot.RearRight.setPower(0.4);
-                        robot.RearLeft.setPower(0.4);
-                    } else if (currentHeading > targetHeading - 1) {
-                        robot.FrontRight.setPower(-0.4);
-                        robot.FrontLeft.setPower(-0.4);
-                        robot.RearRight.setPower(-0.4);
-                        robot.RearLeft.setPower(-0.4);
+                        robot.FrontRight.setPower(-0.5);
+                        robot.FrontLeft.setPower(-0.5);
+                        robot.RearRight.setPower(-0.5);
+                        robot.RearLeft.setPower(-0.5);
+                    } else if (currentHeading < targetHeading - 5) {
+                        robot.FrontRight.setPower(0.2);
+                        robot.FrontLeft.setPower(0.2);
+                        robot.RearRight.setPower(0.2);
+                        robot.RearLeft.setPower(0.2);
+                    } else if (currentHeading > targetHeading + 5) {
+                        robot.FrontRight.setPower(-0.2);
+                        robot.FrontLeft.setPower(-0.2);
+                        robot.RearRight.setPower(-0.2);
+                        robot.RearLeft.setPower(-0.2);
+                    } else if (currentHeading < targetHeading) {
+                        robot.FrontRight.setPower(0.1);
+                        robot.FrontLeft.setPower(0.1);
+                        robot.RearRight.setPower(0.1);
+                        robot.RearLeft.setPower(0.1);
+                    } else if (currentHeading > targetHeading) {
+                        robot.FrontRight.setPower(-0.1);
+                        robot.FrontLeft.setPower(-0.1);
+                        robot.RearRight.setPower(-0.1);
+                        robot.RearLeft.setPower(-0.1);
                     }
                 }
                 robot.FrontRight.setPower(0);
@@ -298,8 +314,12 @@ public class RingleaderV1 extends OpMode {
                 startCheck = true;
             }
 
-            if (gamepad2.left_stick_button) {
-                autoHeading = 0;
+            if (gamepad2.left_stick_button && leftStickCheck) {
+                checkOrientation();
+                autoHeading = currentHeading;
+                leftStickCheck = false;
+            } else if (!gamepad2.left_stick_button){
+                leftStickCheck = true;
             }
         }
         else if(expert){
@@ -609,7 +629,7 @@ public class RingleaderV1 extends OpMode {
         angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         robot.imu.getPosition();
         // and save the heading
-        currentHeading = angles.firstAngle + autoHeading;
+        currentHeading = angles.firstAngle - autoHeading;
     }
 
     private void DriveStraight(double power) {
