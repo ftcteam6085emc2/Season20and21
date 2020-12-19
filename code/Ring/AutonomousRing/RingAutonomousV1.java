@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.Season20and21.code.Ring.AutonomousRing;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensors;
 import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -45,9 +40,6 @@ public class RingAutonomousV1 extends LinearOpMode {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-
         robot.init(hardwareMap);
         robot.imu.initialize(parameters);
 
@@ -118,15 +110,17 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-500, 0.8);
                 Strafe(-1600, 0.6);
                 Turn(2900, 0.8);
-                DriveStraightDistance(-500, 0.8);
-                DriveStraightDistance(500, 0.8);
+                DriveStraightDistance(-1000, 0.8);
+                DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
                 sleep(1000);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
-                sleep(2000);
+                sleep(1000);
                 Strafe(500, 0.6);
-                sleep(2000);
+                sleep(1000);
+                Strafe(500, 0.6);
+                sleep(1000);
                 robot.Launcher.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
@@ -145,15 +139,17 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistanceColor(-1250, 0.8);
                 DriveStraightDistance(-250, 0.8);
                 Turn(2900, 0.8);
-                DriveStraightDistance(-500, 0.8);
-                DriveStraightDistance(500, 0.8);
+                DriveStraightDistance(-1000, 0.8);
+                DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
                 sleep(1000);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
-                sleep(2000);
+                sleep(1000);
                 Strafe(500, 0.6);
-                sleep(2000);
+                sleep(1000);
+                Strafe(500, 0.6);
+                sleep(1000);
                 robot.Launcher.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
                     DriveStraight(0.4);
@@ -176,16 +172,18 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-250, 0.8);
                 Strafe(-1600, 0.6);
                 Turn(2900, 0.8);
-                DriveStraightDistance(-500, 0.8);
-                DriveStraightDistance(500, 0.8);
+                DriveStraightDistance(-1000, 0.8);
+                DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
                 sleep(1000);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
                 robot.Collector.setPower(1);
-                sleep(2000);
+                sleep(1000);
                 Strafe(500, 0.6);
-                sleep(2000);
+                sleep(1000);
+                Strafe(500, 0.6);
+                sleep(1000);
                 robot.Launcher.setPower(0);
                 DriveStraightDistanceColor(-1000, 0.4);
         }

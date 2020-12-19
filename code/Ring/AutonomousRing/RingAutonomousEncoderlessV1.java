@@ -214,7 +214,7 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
         StopDriving();
     }
 
-    private void DriveStraightDistanceColor(int distance, double power) {
+    /*private void DriveStraightDistanceColor(int distance, double power) {
         telemetry.update();
 
         robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
@@ -233,7 +233,7 @@ public class RingAutonomousEncoderlessV1 extends LinearOpMode {
         }
 
         StopDriving();
-    }
+    }*/
 
     private void Turn(int distance, double power) {
         robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
