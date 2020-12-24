@@ -6,16 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
 
-@TeleOp(name = "RingleaderV1", group = "Test")
-public class RingleaderV1 extends OpMode {
+@TeleOp(name = "RingleaderArcadeV1", group = "Test")
+public class RingleaderArcadeV1 extends OpMode {
 
     RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
     double power = 0.5;
@@ -52,16 +52,6 @@ public class RingleaderV1 extends OpMode {
         robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.Collector.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.Elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.Launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Collector.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -100,11 +90,11 @@ public class RingleaderV1 extends OpMode {
             telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
             telemetry.addLine("Target Changing: " + targetChanging);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.FrontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            robot.RearRight.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
             if (gamepad1.dpad_left && leftCheck) {
                 if (targetChanging == 90) {
@@ -328,11 +318,11 @@ public class RingleaderV1 extends OpMode {
             telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
             telemetry.addLine("Target Changing: " + targetChanging);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.FrontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            robot.RearRight.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
             if(gamepad1.right_bumper && servoCheck){
                 robot.ServoElevate.setPower(-1);
@@ -479,11 +469,11 @@ public class RingleaderV1 extends OpMode {
         else if(dualMode){
             telemetry.addLine("Power is at: " + power);
             telemetry.addLine("Current Heading: " + currentHeading);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.FrontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            robot.RearRight.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
             if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
                 robot.ServoElevate.setPower(-1);
@@ -553,11 +543,11 @@ public class RingleaderV1 extends OpMode {
         else {
             telemetry.addLine("Power is at: " + power);
             telemetry.addLine("Current Heading: " + currentHeading);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.FrontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            robot.RearRight.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
             if ((gamepad2.right_bumper || gamepad2.left_bumper) && servoCheck) {
                 robot.ServoElevate.setPower(-1);

@@ -62,6 +62,13 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        while (!isStopRequested() && !robot.imu.isGyroCalibrated()) {
+            sleep(50);
+            idle();
+        }
+        telemetry.addData("IMU calibration status", robot.imu.getCalibrationStatus().toString());
+        telemetry.update();
+
         waitForStart();
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         /*relativeLayout.post(new Runnable() {
@@ -73,8 +80,11 @@ public class RingAutonomousV1 extends LinearOpMode {
         checkOrientation();
         offset = currentHeading;
 
+        TurnIMU();
+        stop();
+
         Strafe(-100, 0.6);
-        DriveStraightDistance(1400,0.8);
+        DriveStraightDistance(1400, 0.8);
         DriveStraightDistanceSquared(400, 0.4);
         Strafe(1200, 0.6);
         DriveStraightDistance(2000, 0.8);
@@ -89,13 +99,11 @@ public class RingAutonomousV1 extends LinearOpMode {
             telemetry.update();
         }*/
 
-        if(averageCount1 > averageCount2 && averageCount1 > averageCount3){
+        if (averageCount1 > averageCount2 && averageCount1 > averageCount3) {
             tZone = 1;
-        }
-        else if(averageCount2 > averageCount3 && averageCount2 > averageCount1){
+        } else if (averageCount2 > averageCount3 && averageCount2 > averageCount1) {
             tZone = 2;
-        }
-        else{
+        } else {
             tZone = 3;
         }
         telemetry.update();
@@ -109,7 +117,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.Collector.setPower(0);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(-1600, 0.6);
-                Turn(2900, 0.8);
+                Turn(2900, 0.8, true);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
@@ -138,7 +146,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.Collector.setPower(0);
                 DriveStraightDistanceColor(-1250, 0.8);
                 DriveStraightDistance(-250, 0.8);
-                Turn(2900, 0.8);
+                Turn(2900, 0.8, true);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
@@ -171,7 +179,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistanceColor(-3000, 0.8);
                 DriveStraightDistance(-250, 0.8);
                 Strafe(-1600, 0.6);
-                Turn(2900, 0.8);
+                Turn(2900, 0.8, true);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
@@ -215,7 +223,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             idle();
 
             checkOrientation();
-            if(distance == Math.abs(distance)) {
+            if (distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 0.9);
                     robot.FrontLeft.setPower(power * 1.1);
@@ -232,8 +240,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                     robot.RearRight.setPower(power);
                     robot.RearLeft.setPower(power);
                 }
-            }
-            else{
+            } else {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 1.1);
                     robot.FrontLeft.setPower(power * 0.9);
@@ -268,13 +275,11 @@ public class RingAutonomousV1 extends LinearOpMode {
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
-            if(robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 14){
+            if (robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 14) {
                 averageCount3++;
-            }
-            else if (robot.sensorRangeBottom.getDistance(DistanceUnit.CM) < 14){
+            } else if (robot.sensorRangeBottom.getDistance(DistanceUnit.CM) < 14) {
                 averageCount2++;
-            }
-            else {
+            } else {
                 averageCount1++;
             }
         }
@@ -295,7 +300,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             idle();
 
             checkOrientation();
-            if(distance == Math.abs(distance)) {
+            if (distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 0.9);
                     robot.FrontLeft.setPower(power * 0.9);
@@ -312,8 +317,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                     robot.RearRight.setPower(power);
                     robot.RearLeft.setPower(power);
                 }
-            }
-            else{
+            } else {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 1.1);
                     robot.FrontLeft.setPower(power * 1.1);
@@ -348,7 +352,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
-            if(robot.sensorColor.alpha() >= 800){
+            if (robot.sensorColor.alpha() >= 800) {
                 whiteDetected = true;
                 telemetry.addLine("White Line Detected!");
                 telemetry.update();
@@ -359,7 +363,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         StopDriving();
     }
 
-    private void Turn(int distance, double power) {
+    private void Turn(int distance, double power, boolean full) {
         robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
         robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
         robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
@@ -368,9 +372,76 @@ public class RingAutonomousV1 extends LinearOpMode {
         DriveStraight(power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
+
+            if (full) {
+                checkOrientation();
+                if (currentHeading < -179 || currentHeading > 179) {
+                    break;
+                } else if (currentHeading < 0) {
+                    robot.FrontRight.setPower(-0.1);
+                    robot.FrontLeft.setPower(0.1);
+                    robot.RearRight.setPower(-0.1);
+                    robot.RearLeft.setPower(0.1);
+                } else if (currentHeading < 90) {
+                    robot.FrontRight.setPower(1);
+                    robot.FrontLeft.setPower(-1);
+                    robot.RearRight.setPower(1);
+                    robot.RearLeft.setPower(-1);
+                } else if (currentHeading < 135) {
+                    robot.FrontRight.setPower(0.5);
+                    robot.FrontLeft.setPower(-0.5);
+                    robot.RearRight.setPower(0.5);
+                    robot.RearLeft.setPower(-0.5);
+                } else if (currentHeading < 165) {
+                    robot.FrontRight.setPower(0.3);
+                    robot.FrontLeft.setPower(-0.3);
+                    robot.RearRight.setPower(0.3);
+                    robot.RearLeft.setPower(-0.3);
+                } else if (currentHeading < 180) {
+                    robot.FrontRight.setPower(0.1);
+                    robot.FrontLeft.setPower(-0.1);
+                    robot.RearRight.setPower(0.1);
+                    robot.RearLeft.setPower(-0.1);
+                }
+            }
         }
 
         StopDriving();
+    }
+
+    private void TurnIMU() {
+        double ogtime = time;
+        while (time < ogtime + 10) {
+            checkOrientation();
+            if (currentHeading < -179 || currentHeading > 179) {
+                break;
+            } else if (currentHeading < 0) {
+                robot.FrontRight.setPower(-0.1);
+                robot.FrontLeft.setPower(0.1);
+                robot.RearRight.setPower(-0.1);
+                robot.RearLeft.setPower(0.1);
+            } else if (currentHeading < 90) {
+                robot.FrontRight.setPower(1);
+                robot.FrontLeft.setPower(-1);
+                robot.RearRight.setPower(1);
+                robot.RearLeft.setPower(-1);
+            } else if (currentHeading < 135) {
+                robot.FrontRight.setPower(0.5);
+                robot.FrontLeft.setPower(-0.5);
+                robot.RearRight.setPower(0.5);
+                robot.RearLeft.setPower(-0.5);
+            } else if (currentHeading < 165) {
+                robot.FrontRight.setPower(0.3);
+                robot.FrontLeft.setPower(-0.3);
+                robot.RearRight.setPower(0.3);
+                robot.RearLeft.setPower(-0.3);
+            } else if (currentHeading < 180) {
+                robot.FrontRight.setPower(0.1);
+                robot.FrontLeft.setPower(-0.1);
+                robot.RearRight.setPower(0.1);
+                robot.RearLeft.setPower(-0.1);
+            }
+        }
     }
 
     private void checkOrientation() {
