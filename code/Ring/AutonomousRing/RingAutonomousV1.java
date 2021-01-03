@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.Season20and21.code.Ring.RingleaderHWMapSensorsColor;
+import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
 
-@Autonomous(name = "RingAutonomousV1", group = "Concept")
+@Autonomous(name = "RingAutonomousV1", group = "Autonomous", preselectTeleOp = "RingleaderV1")
 public class RingAutonomousV1 extends LinearOpMode {
     int tZone = 0;
     double targetHeading = 0;
@@ -81,7 +81,6 @@ public class RingAutonomousV1 extends LinearOpMode {
         offset = currentHeading;
 
         TurnIMU();
-        stop();
 
         Strafe(-100, 0.6);
         DriveStraightDistance(1400, 0.8);
@@ -411,11 +410,12 @@ public class RingAutonomousV1 extends LinearOpMode {
 
     private void TurnIMU() {
         double ogtime = time;
-        while (time < ogtime + 10) {
+        while (time < ogtime + 5) {
             checkOrientation();
-            if (currentHeading < -179 || currentHeading > 179) {
+            if (currentHeading < -178.75 || currentHeading > 178.75) {
                 break;
-            } else if (currentHeading < 0) {
+            }
+            if (currentHeading < 0) {
                 robot.FrontRight.setPower(-0.1);
                 robot.FrontLeft.setPower(0.1);
                 robot.RearRight.setPower(-0.1);
@@ -441,6 +441,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.RearRight.setPower(0.1);
                 robot.RearLeft.setPower(-0.1);
             }
+            sleep(100);
         }
     }
 

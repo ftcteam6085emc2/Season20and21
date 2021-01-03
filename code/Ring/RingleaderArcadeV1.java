@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
+import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensors;
+import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -17,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 @TeleOp(name = "RingleaderArcadeV1", group = "Test")
 public class RingleaderArcadeV1 extends OpMode {
 
-    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
+    RingleaderHWMapSensors robot = new RingleaderHWMapSensors();
     double power = 0.5;
     boolean dualMode = true;
     boolean powerIncrement = true;
@@ -73,8 +75,6 @@ public class RingleaderArcadeV1 extends OpMode {
         else if(!gamepad1.back){
             backCheck = true;
         }
-
-        telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha());
 
         if(gamepad1.right_stick_button && expertCheck){
             expert = !expert;

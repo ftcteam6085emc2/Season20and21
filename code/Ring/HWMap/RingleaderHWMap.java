@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.Season20and21.code.Ring;
+package org.firstinspires.ftc.Season20and21.code.Ring.HWMap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.CRServo;

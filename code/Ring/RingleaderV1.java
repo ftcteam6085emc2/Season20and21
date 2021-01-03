@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -55,6 +56,7 @@ public class RingleaderV1 extends OpMode {
         robot.Collector.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.Elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.Launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.Wobble.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -62,6 +64,7 @@ public class RingleaderV1 extends OpMode {
         robot.Collector.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.Launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.Elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.Wobble.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -313,6 +316,23 @@ public class RingleaderV1 extends OpMode {
 
             else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
+            }
+
+            if(gamepad1.right_trigger > 0){
+                robot.Wobble.setPower(gamepad1.right_trigger);
+            }
+            else if(gamepad1.left_trigger > 0){
+                robot.Wobble.setPower(-gamepad1.left_trigger);
+            }
+            else {
+                robot.Wobble.setPower(0);
+            }
+
+            if(gamepad1.right_bumper){
+                robot.WobbleServo.setPosition(0.5);
+            }
+            else if (gamepad1.left_bumper){
+                robot.WobbleServo.setPosition(0);
             }
             /*if (gamepad2.right_bumper) {
                 robot.ServoElevate.setPower(-1);
