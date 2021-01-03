@@ -80,7 +80,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         checkOrientation();
         offset = currentHeading;
 
-        TurnIMU();
+        Turn(2900, 0.8, true);
 
         Strafe(-100, 0.6);
         DriveStraightDistance(1400, 0.8);
@@ -414,8 +414,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             checkOrientation();
             if (currentHeading < -178.75 || currentHeading > 178.75) {
                 break;
-            }
-            if (currentHeading < 0) {
+            } else if (currentHeading < 0) {
                 robot.FrontRight.setPower(-0.1);
                 robot.FrontLeft.setPower(0.1);
                 robot.RearRight.setPower(-0.1);
