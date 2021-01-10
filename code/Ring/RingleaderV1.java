@@ -38,6 +38,8 @@ public class RingleaderV1 extends OpMode {
     int b = 0;
     int x = 0;
     int y = 0;
+    boolean leftStickCheck1 = true;
+    int leftStick1 = 0;
     int leftBumper = 0;
     int rightBumper = 0;
     int targetChanging = 90;
@@ -195,6 +197,27 @@ public class RingleaderV1 extends OpMode {
             } else if (!gamepad2.left_stick_button){
                 leftStickCheck = true;
             }
+
+            if(gamepad1.left_stick_button && leftStickCheck1 && leftStick1 == 0){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftStick1++;
+                leftStickCheck1 = false;
+            }
+            else if(gamepad1.left_stick_button && leftStickCheck1 && leftStick1 == 1){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                leftStick1--;
+                leftStickCheck1 = false;
+            }
+            else if(!gamepad1.left_stick_button){
+                leftStickCheck1 = true;
+            }
+
             if(gamepad2.b){
                 robot.Collector.setPower(1);
             }
