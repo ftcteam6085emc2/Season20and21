@@ -80,8 +80,6 @@ public class RingAutonomousV1 extends LinearOpMode {
         checkOrientation();
         offset = currentHeading;
 
-        Turn(2900, 0.8, true);
-
         Strafe(-100, 0.6);
         DriveStraightDistance(1400, 0.8);
         DriveStraightDistanceSquared(400, 0.4);
@@ -116,7 +114,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.Collector.setPower(0);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(-1600, 0.6);
-                Turn(2900, 0.8, true);
+                Turn(2900, 0.8, false);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
@@ -145,7 +143,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.Collector.setPower(0);
                 DriveStraightDistanceColor(-1250, 0.8);
                 DriveStraightDistance(-250, 0.8);
-                Turn(2900, 0.8, true);
+                Turn(2900, 0.8, false);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
@@ -178,7 +176,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistanceColor(-3000, 0.8);
                 DriveStraightDistance(-250, 0.8);
                 Strafe(-1600, 0.6);
-                Turn(2900, 0.8, true);
+                Turn(2900, 0.8, false);
                 DriveStraightDistance(-1000, 0.8);
                 DriveStraightDistance(1000, 0.8);
                 robot.Launcher.setPower(0.7);
