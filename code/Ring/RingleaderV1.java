@@ -63,10 +63,6 @@ public class RingleaderV1 extends OpMode {
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Collector.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Wobble.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -339,6 +335,7 @@ public class RingleaderV1 extends OpMode {
 
             else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
+                robot.ServoElevate.setPower(gamepad2.left_stick_y);
             }
 
             if(gamepad1.right_trigger > 0){

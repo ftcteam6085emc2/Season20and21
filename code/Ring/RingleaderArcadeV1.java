@@ -89,8 +89,8 @@ public class RingleaderArcadeV1 extends OpMode {
             telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
             telemetry.addLine("Target Changing: " + targetChanging);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
 
             robot.FrontRight.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             robot.RearRight.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
@@ -302,8 +302,10 @@ public class RingleaderArcadeV1 extends OpMode {
 
             else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
+                robot.ServoElevate.setPower(gamepad2.left_stick_y);
             }
             /*if (gamepad2.right_bumper) {
+
                 robot.ServoElevate.setPower(-1);
             } else if (gamepad2.left_bumper) {
                 robot.ServoElevate.setPower(1);
