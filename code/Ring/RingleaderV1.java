@@ -22,17 +22,17 @@ public class RingleaderV1 extends OpMode {
     double power = 0.5;
     boolean dualMode = true;
     boolean powerIncrement = true;
-    boolean leftCheck = true;
-    boolean rightCheck = true;
-    boolean backCheck = true;
+    //boolean leftCheck = true;
+    //boolean rightCheck = true;
+    //boolean backCheck = true;
     boolean expert = true;
     boolean expertCheck = true;
     boolean collectorCheck = true;
     boolean launcherCheck = true;
     boolean servoCheck = true;
     boolean powerUpdate = false;
-    boolean leftStickCheck = true;
-    double targetHeading = 0;
+    //boolean leftStickCheck = true;
+    //double targetHeading = 0;
     double currentHeading = 0;
     int a = 0;
     int b = 0;
@@ -42,7 +42,7 @@ public class RingleaderV1 extends OpMode {
     int leftStick1 = 0;
     int leftBumper = 0;
     int rightBumper = 0;
-    int targetChanging = 90;
+    //int targetChanging = 90;
     double autoHeading = HeadingHolder.getHeading();
 
     Orientation angles;
@@ -77,13 +77,13 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
-        if(gamepad1.back && backCheck){
+        /*if(gamepad1.back && backCheck){
             dualMode = !dualMode;
             backCheck = false;
         }
         else if(!gamepad1.back){
             backCheck = true;
-        }
+        }*/
 
         telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha());
 
@@ -98,16 +98,16 @@ public class RingleaderV1 extends OpMode {
         if(dualMode && expert){
             checkOrientation();
             telemetry.addLine("Power is at: " + power);
-            telemetry.addLine("Target Heading: " + targetHeading);
+            //telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
-            telemetry.addLine("Target Changing: " + targetChanging);
+            //telemetry.addLine("Target Changing: " + targetChanging);
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
             robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
-            if (gamepad1.dpad_left && leftCheck) {
+            /*if (gamepad1.dpad_left && leftCheck) {
                 if (targetChanging == 90) {
                     targetChanging /= 2;
                 } else {
@@ -129,7 +129,7 @@ public class RingleaderV1 extends OpMode {
             else if(!gamepad1.dpad_right){
                 rightCheck = true;
             }
-            if (gamepad1.start) {
+            if (gamepad1.left_stick_button) {
                 while ((!(currentHeading < targetHeading + 0.25 && currentHeading > targetHeading - 0.25)) || (targetHeading == 180 && (currentHeading < -178 || currentHeading > 178))) {
                     checkOrientation();
                     if(currentHeading < -170 && targetHeading == 180){
@@ -361,13 +361,32 @@ public class RingleaderV1 extends OpMode {
             } else {
                 robot.ServoElevate.setPower(0);
             }*/
+            if(gamepad1.start && leftStickCheck1 && leftStick1 == 0){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftStick1++;
+                leftStickCheck1 = false;
+            }
+            else if(gamepad1.start && leftStickCheck1 && leftStick1 == 1){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                leftStick1--;
+                leftStickCheck1 = false;
+            }
+            else if(!gamepad1.start){
+                leftStickCheck1 = true;
+            }
         }
         else if(expert){
             checkOrientation();
             telemetry.addLine("Power is at: " + power);
-            telemetry.addLine("Target Heading: " + targetHeading);
+            //telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
-            telemetry.addLine("Target Changing: " + targetChanging);
+            //telemetry.addLine("Target Changing: " + targetChanging);
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
@@ -477,7 +496,7 @@ public class RingleaderV1 extends OpMode {
                 powerIncrement = true;
             }
 
-            if (gamepad1.dpad_left) {
+            /*if (gamepad1.dpad_left) {
                 if (targetChanging == 90) {
                     targetChanging /= 2;
                 } else {
@@ -514,7 +533,7 @@ public class RingleaderV1 extends OpMode {
 
             if (gamepad1.left_stick_button) {
                 autoHeading = 0;
-            }
+            }*/
         }
         else if(dualMode){
             telemetry.addLine("Power is at: " + power);
@@ -536,6 +555,7 @@ public class RingleaderV1 extends OpMode {
             }
             else if (!(gamepad2.right_bumper || gamepad2.left_bumper)){
                 servoCheck = true;
+                robot.ServoElevate.setPower(-Math.abs(gamepad2.left_stick_y));
             }
 
             if ((gamepad2.b || gamepad2.x) && collectorCheck) {
@@ -588,6 +608,43 @@ public class RingleaderV1 extends OpMode {
                 powerIncrement = false;
             } else if (!gamepad2.dpad_down && !gamepad1.dpad_up) {
                 powerIncrement = true;
+            }
+
+            if(gamepad1.start && leftStickCheck1 && leftStick1 == 0){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftStick1++;
+                leftStickCheck1 = false;
+            }
+            else if(gamepad1.start && leftStickCheck1 && leftStick1 == 1){
+                robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+                leftStick1--;
+                leftStickCheck1 = false;
+            }
+            else if(!gamepad1.start){
+                leftStickCheck1 = true;
+            }
+
+            if(gamepad1.right_trigger > 0){
+                robot.Wobble.setPower(gamepad1.right_trigger);
+            }
+            else if(gamepad1.left_trigger > 0){
+                robot.Wobble.setPower(-gamepad1.left_trigger);
+            }
+            else {
+                robot.Wobble.setPower(0);
+            }
+
+            if(gamepad1.right_bumper){
+                robot.WobbleServo.setPosition(0.5);
+            }
+            else if (gamepad1.left_bumper){
+                robot.WobbleServo.setPosition(0);
             }
         }
         else {
