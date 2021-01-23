@@ -1,13 +1,15 @@
-package org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp;
+package org.firstinspires.ftc.Season20and21.code.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+@Disabled
 @TeleOp(name = "Chassis", group = "Test")
 public class ChassisJoystick extends OpMode {
 
-    HWMap robot = new HWMap();
+    org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp.HWMap robot = new org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp.HWMap();
 
     @Override
     public void init() {

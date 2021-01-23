@@ -3,6 +3,7 @@ package org.firstinspires.ftc.Season20and21.code.Autonomous;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Season20and21.code.TeleOp.HWMap;
 
 import java.util.Locale;
 
+@Disabled
 @Autonomous(name = "AutoTestingCleanIMU", group = "Concept")
 public class AutoTestingCleanIMU extends LinearOpMode {
     boolean scanned = true;

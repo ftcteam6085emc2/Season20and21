@@ -58,6 +58,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
  * is explained below.
  */
 
+@Disabled
 @Autonomous(name = "VuforiaGarbage", group = "Concept")
 public class AutoTesting extends LinearOpMode {
 

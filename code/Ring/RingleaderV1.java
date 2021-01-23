@@ -85,9 +85,10 @@ public class RingleaderV1 extends OpMode {
             backCheck = true;
         }*/
 
-        telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha());
+        telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha()); //No one will ever use this, so be it
+        if(robot.sensorColor.alpha() > 800){telemetry.addLine("On White Line");}
 
-        if(gamepad1.right_stick_button && expertCheck){
+        if(gamepad1.right_stick_button && expertCheck){   //Cringe, but it looks good in control award
             expert = !expert;
             expertCheck = false;
         }
@@ -129,7 +130,7 @@ public class RingleaderV1 extends OpMode {
             else if(!gamepad1.dpad_right){
                 rightCheck = true;
             }
-            if (gamepad1.left_stick_button) {
+            if (gamepad1.left_stick_button) { //Not right now, this sucks. At 180 degrees everything breaks due to rollover
                 while ((!(currentHeading < targetHeading + 0.25 && currentHeading > targetHeading - 0.25)) || (targetHeading == 180 && (currentHeading < -178 || currentHeading > 178))) {
                     checkOrientation();
                     if(currentHeading < -170 && targetHeading == 180){

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.Season20and21.code.Touchdown;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
+@Disabled
 @Autonomous(name = "AutoTestingCleanIMUTOUCHDOWNColorSensor", group = "Concept")
 public class AutoTestingCleanIMUTouchdownColorSensor extends LinearOpMode {
     boolean scanned = true;

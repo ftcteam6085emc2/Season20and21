@@ -7,6 +7,7 @@ import android.view.View;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.Season20and21.code.HeadingHolder;
 
 import java.util.Locale;
 
+@Disabled
 @Autonomous(name = "AutoTestingCleanIMUTOUCHDOWNDistanceSensor", group = "Concept")
 public class AutoTestingCleanIMUTouchdownDistanceSensor extends LinearOpMode {
     int tZone = 0;
