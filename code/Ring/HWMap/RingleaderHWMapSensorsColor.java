@@ -27,7 +27,9 @@ public class RingleaderHWMapSensorsColor {
     public BNO055IMU imu = null;
 
     public ColorSensor sensorColor = null;
+    public ColorSensor ringSensorColor = null;
     public DistanceSensor sensorDistance = null;
+    public DistanceSensor ringSensorDistance = null;
     public DistanceSensor sensorRangeTop = null;
     public DistanceSensor sensorRangeBottom = null;
 
@@ -58,6 +60,8 @@ public class RingleaderHWMapSensorsColor {
 
         sensorColor = hwMap.get(ColorSensor.class, "colorSensor");
         sensorDistance = hwMap.get(DistanceSensor.class, "colorSensor");
+        ringSensorColor = hwMap.get(ColorSensor.class, "ringColorSensor");
+        ringSensorDistance = hwMap.get(DistanceSensor.class, "ringColorSensor");
         sensorRangeTop = hwMap.get(DistanceSensor.class, "rangeSensorTop");
         sensorRangeBottom = hwMap.get(DistanceSensor.class, "rangeSensorBottom");
 

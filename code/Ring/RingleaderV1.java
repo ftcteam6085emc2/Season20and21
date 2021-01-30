@@ -20,6 +20,8 @@ public class RingleaderV1 extends OpMode {
 
     RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
     double power = 0.5;
+    double targetHeading = 0;
+    boolean ringLoaded = false;
     boolean dualMode = true;
     boolean powerIncrement = true;
     //boolean leftCheck = true;
@@ -77,6 +79,8 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
+        if(robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000){ringLoaded = true;}
+        else{ringLoaded = false;}
         /*if(gamepad1.back && backCheck){
             dualMode = !dualMode;
             backCheck = false;
@@ -86,6 +90,7 @@ public class RingleaderV1 extends OpMode {
         }*/
 
         telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha()); //No one will ever use this, so be it
+        telemetry.addLine("Ring loaded: "+ ringLoaded);
         if(robot.sensorColor.alpha() > 800){telemetry.addLine("On White Line");}
 
         if(gamepad1.right_stick_button && expertCheck){   //Cringe, but it looks good in control award
@@ -107,6 +112,10 @@ public class RingleaderV1 extends OpMode {
 
             robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+
+            if(gamepad1.dpad_right){
+                Strafe(750, 0.8);
+            }
 
             /*if (gamepad1.dpad_left && leftCheck) {
                 if (targetChanging == 90) {
@@ -728,5 +737,85 @@ public class RingleaderV1 extends OpMode {
         robot.imu.getPosition();
         // and save the heading
         currentHeading = angles.firstAngle - autoHeading;
+    }
+
+    private void DriveStraight(double power) {
+        robot.FrontRight.setPower(power);
+        robot.FrontLeft.setPower(power);
+        robot.RearRight.setPower(power);
+        robot.RearLeft.setPower(power);
+    }
+
+    private void StopDriving() {
+        DriveStraight(0);
+    }
+
+    private void Strafe(int distance, double power) {
+        telemetry.update();
+
+        robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.FrontRight.setTargetPosition(0);
+        robot.FrontLeft.setTargetPosition(0);
+        robot.RearRight.setTargetPosition(0);
+        robot.RearLeft.setTargetPosition(0);
+
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.RearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.RearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() - distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
+
+        DriveStraight(power);
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy())) {
+            checkOrientation();
+            if (distance == Math.abs(distance)) {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            } else {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            }
+        }
+        StopDriving();
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }

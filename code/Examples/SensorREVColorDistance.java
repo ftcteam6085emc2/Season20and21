@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Season20and21.code.Touchdown.HWMapTouchdown;
 
@@ -54,7 +55,6 @@ import java.util.Locale;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
-@Disabled
 @TeleOp(name = "Sensor: REVColorDistance", group = "Sensor")
 public class SensorREVColorDistance extends LinearOpMode {
 
@@ -76,7 +76,7 @@ public class SensorREVColorDistance extends LinearOpMode {
      *
      */
 
-    HWMapTouchdown robot = new HWMapTouchdown();
+    RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -104,18 +104,18 @@ public class SensorREVColorDistance extends LinearOpMode {
             // convert the RGB values to HSV values.
             // multiply by the SCALE_FACTOR.
             // then cast it back to int (SCALE_FACTOR is a double)
-            Color.RGBToHSV((int) (robot.sensorColor.red() * SCALE_FACTOR),
-                    (int) (robot.sensorColor.green() * SCALE_FACTOR),
-                    (int) (robot.sensorColor.blue() * SCALE_FACTOR),
+            Color.RGBToHSV((int) (robot.ringSensorColor.red() * SCALE_FACTOR),
+                    (int) (robot.ringSensorColor.green() * SCALE_FACTOR),
+                    (int) (robot.ringSensorColor.blue() * SCALE_FACTOR),
                     hsvValues);
 
             // send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm)",
-                    String.format(Locale.US, "%.02f", robot.sensorDistance.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Alpha", robot.sensorColor.alpha());
-            telemetry.addData("Red  ", robot.sensorColor.red());
-            telemetry.addData("Green", robot.sensorColor.green());
-            telemetry.addData("Blue ", robot.sensorColor.blue());
+                    String.format(Locale.US, "%.02f", robot.ringSensorDistance.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha", robot.ringSensorColor.alpha());
+            telemetry.addData("Red  ", robot.ringSensorColor.red());
+            telemetry.addData("Green", robot.ringSensorColor.green());
+            telemetry.addData("Blue ", robot.ringSensorColor.blue());
             telemetry.addData("Hue", hsvValues[0]);
 
             // change the background color to match the color detected by the RGB sensor.
@@ -123,7 +123,7 @@ public class SensorREVColorDistance extends LinearOpMode {
             // to the HSVToColor method.
             relativeLayout.post(new Runnable() {
                 public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(robot.sensorColor.alpha(), values));
+                    relativeLayout.setBackgroundColor(Color.HSVToColor(robot.ringSensorColor.alpha(), values));
                 }
             });
 

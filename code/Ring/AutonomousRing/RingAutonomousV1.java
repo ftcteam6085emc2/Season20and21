@@ -26,6 +26,7 @@ public class RingAutonomousV1 extends LinearOpMode {
     int averageCount2 = 0;
     int averageCount3 = 0;
     boolean whiteDetected = false;
+    boolean ringLoaded = false;
 
     Orientation angles; //Safety Goggles are for the weak
 
@@ -82,7 +83,7 @@ public class RingAutonomousV1 extends LinearOpMode {
 
         Strafe(-100, 0.6);
         DriveStraightDistanceSquared(400, 0.4);
-        Strafe(1200, 0.6);
+        Strafe(1500, 0.6);
         DriveStraightDistance(2000, 0.8);
         DriveStraightDistanceColor(1000, 0.4); //was color
         /*if(whiteDetected){
@@ -110,24 +111,18 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-300, 0.8);
                 robot.Collector.setPower(0.5);
                 sleep(1000);
-                DriveStraightDistance(100, 1);
-                sleep(200);
-                DriveStraightDistance(-100, 1);
+                DriveStraightDistanceFast(-300, 1);
                 sleep(200);
                 robot.Collector.setPower(0);
-                DriveStraightDistance(-500, 0.8);
-                Strafe(-1600, 0.6);
-                Turn(1450, 0.8, true);
-                Turn(1450, 0.8, true);
+                DriveStraightDistance(-200, 0.8);
+                Strafe(-1400, 0.6);
+                Turn(1445, 0.8, true);
+                Turn(1445, 0.8, true);
+                //Strafe(2000, 0.8);
+                //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
                 //DriveStraightDistance(1000, 0.8);
-                robot.Launcher.setPower(0.7);
-                sleep(1000);
-                robot.ServoElevate.setPower(-1);
-                robot.Elevator.setPower(0.5);
-                sleep(500);
-                Strafe(1000, 0.2);
-                robot.Launcher.setPower(0);
+                ShootPowershots(false);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
                 }
@@ -141,24 +136,19 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-1600, -0.6);
                 robot.Collector.setPower(0.5);
                 sleep(1000);
-                DriveStraightDistance(100, 1);
-                sleep(200);
-                DriveStraightDistance(-100, 1);
+                DriveStraightDistanceFast(-300, 1);
                 sleep(200);
                 robot.Collector.setPower(0);
-                DriveStraightDistanceColor(-1250, 0.8);
-                DriveStraightDistance(-250, 0.8);
-                Turn(1450, 0.8, true);
-                Turn(1450, 0.8, true);
+                DriveStraightDistanceColor(-950, 0.8);
+                DriveStraightDistance(-500, 0.8);
+                Strafe(200, 0.6);
+                Turn(1445, 0.8, true);
+                Turn(1445, 0.8, true);
+                //Strafe(2000, 0.8);
+                //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
                 //DriveStraightDistance(1000, 0.8);
-                robot.Launcher.setPower(0.7);
-                sleep(1000);
-                robot.ServoElevate.setPower(-1);
-                robot.Elevator.setPower(0.5);
-                sleep(500);
-                Strafe(1000, 0.2);
-                robot.Launcher.setPower(0);
+                ShootPowershots(false);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 120 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 60cm - 120cm
                     DriveStraight(0.4);
                 }
@@ -171,30 +161,23 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(2500, 0.8);
                 robot.Collector.setPower(0.5);
                 sleep(1000);
-                DriveStraightDistance(100, 1);
-                sleep(200);
-                DriveStraightDistance(-100, 1);
+                DriveStraightDistanceFast(-300, 1);
                 sleep(200);
                 robot.Collector.setPower(0);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 60  && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 0cm - 60cm
                     DriveStraight(0.4);
                 }
                 StopDriving();*/
-                DriveStraightDistanceColor(-3000, 0.8);
-                DriveStraightDistance(-250, 0.8);
-                Strafe(-1600, 0.6);
-                Turn(1450, 0.8, true);
-                Turn(1450, 0.8, true);
+                DriveStraightDistanceColor(-2700, 0.8);
+                DriveStraightDistance(-500, 0.8);
+                Strafe(-1400, 0.6);
+                Turn(1445, 0.8, true);
+                Turn(1445, 0.8, true);
+                //Strafe(2000, 0.8);
+                //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
                 //DriveStraightDistance(1000, 0.8);
-                robot.Launcher.setPower(0.7);
-                sleep(1000);
-                robot.ServoElevate.setPower(-1);
-                robot.Elevator.setPower(0.5);
-                robot.Collector.setPower(1);
-                sleep(500);
-                Strafe(1000, 0.2);
-                robot.Launcher.setPower(0);
+                ShootPowershots(false);
                 DriveStraightDistanceColor(-1000, 0.4);
         }
         checkOrientation();
@@ -263,6 +246,58 @@ public class RingAutonomousV1 extends LinearOpMode {
         }
         StopDriving();
         sleep(100);
+    }
+
+    private void DriveStraightDistanceFast(int distance, double power) {
+        telemetry.update();
+
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() - distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
+
+        DriveStraight(power);
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
+            idle();
+
+            checkOrientation();
+            if (distance == Math.abs(distance)) {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            } else {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            }
+        }
+        StopDriving();
     }
 
     private void DriveStraightDistanceSquared(int distance, double power) {
@@ -426,40 +461,36 @@ public class RingAutonomousV1 extends LinearOpMode {
         sleep(100);
     }
 
-    private void TurnIMU() {
-        double ogtime = time;
-        while (time < ogtime + 5) {
-            checkOrientation();
-            if (currentHeading < -178.75 || currentHeading > 178.75) {
-                break;
-            } else if (currentHeading < 0) {
-                robot.FrontRight.setPower(-0.1);
-                robot.FrontLeft.setPower(0.1);
-                robot.RearRight.setPower(-0.1);
-                robot.RearLeft.setPower(0.1);
-            } else if (currentHeading < 90) {
-                robot.FrontRight.setPower(1);
-                robot.FrontLeft.setPower(-1);
-                robot.RearRight.setPower(1);
-                robot.RearLeft.setPower(-1);
-            } else if (currentHeading < 135) {
-                robot.FrontRight.setPower(0.5);
-                robot.FrontLeft.setPower(-0.5);
-                robot.RearRight.setPower(0.5);
-                robot.RearLeft.setPower(-0.5);
-            } else if (currentHeading < 165) {
-                robot.FrontRight.setPower(0.3);
-                robot.FrontLeft.setPower(-0.3);
-                robot.RearRight.setPower(0.3);
-                robot.RearLeft.setPower(-0.3);
-            } else if (currentHeading < 180) {
-                robot.FrontRight.setPower(0.1);
-                robot.FrontLeft.setPower(-0.1);
-                robot.RearRight.setPower(0.1);
-                robot.RearLeft.setPower(-0.1);
-            }
-            sleep(100);
+    private void ShootPowershots(boolean three){
+        int i = 0;
+        int j = 2;
+        if(three){
+            j = 3;
         }
+        robot.Launcher.setPower(0.7);
+        sleep(500);
+        while(i < j) {
+            if(robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000){ringLoaded = true;}
+            robot.ServoElevate.setPower(-1);
+            robot.Elevator.setPower(0.5);
+            robot.Collector.setPower(1);
+            if(ringLoaded || i == 0){
+                robot.Elevator.setPower(0);
+                robot.Collector.setPower(0);
+                while(ringLoaded){
+                    if(robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000){ringLoaded = true;}
+                    idle();
+                }
+                sleep(500);
+                Strafe(750, 0.8);
+                i++;
+            }
+            idle();
+        }
+        robot.ServoElevate.setPower(0);
+        robot.Elevator.setPower(0);
+        robot.Collector.setPower(0);
+        robot.Launcher.setPower(0);
     }
 
     private void checkOrientation() {
