@@ -84,8 +84,8 @@ public class RingAutonomousV1 extends LinearOpMode {
         Strafe(-100, 0.6);
         DriveStraightDistanceSquared(400, 0.4);
         Strafe(1500, 0.6);
-        DriveStraightDistance(2000, 0.8);
-        DriveStraightDistanceColor(1000, 0.4); //was color
+        DriveStraightDistance(2000, 1);
+        DriveStraightDistanceColor(1000, 0.6); //was color
         Strafe(250, 0.6);
         checkOrientation();
         offset -= currentHeading;
@@ -153,8 +153,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 //DriveStraightDistance(-1000, 0.8);
                 //DriveStraightDistance(1000, 0.8);
                 ShootPowershots(true);
-                Strafe(-750, 0.8);
-                DriveStraightDistance(200, 0.8);
+                Strafe(-900, 0.8);
+                DriveStraightDistance(300, 0.8);
                 robot.Collector.setPower(1);
                 robot.Elevator.setPower(0.5);
                 DriveStraightDistance(500, 0.2);
@@ -176,7 +176,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             case 3:
                 telemetry.addLine("There are 4 rings in the stack");
                 telemetry.update();
-                DriveStraightDistance(2500, 0.8);
+                DriveStraightDistance(2500, 1);
                 robot.Collector.setPower(0.5);
                 sleep(1000);
                 DriveStraightDistanceFast(-300, 1);
@@ -196,20 +196,19 @@ public class RingAutonomousV1 extends LinearOpMode {
                 //DriveStraightDistance(-1000, 0.8);
                 //DriveStraightDistance(1000, 0.8);
                 ShootPowershots(true);
-                Strafe(-750, 0.8);
-                DriveStraightDistance(200, 1);
+                Strafe(-900, 0.8);
+                DriveStraightDistance(300, 1);
                 robot.Collector.setPower(1);
                 robot.Elevator.setPower(0.5);
-                DriveStraightDistance(500, 0.2);
-                sleep(1000);
+                DriveStraightDistance(750, 0.1);
                 robot.Collector.setPower(0);
                 robot.Elevator.setPower(0);
                 DriveStraightDistance(-700, 1);
-                Strafe(-1000, 0.6);
+                Strafe(-1000, 0.8);
                 robot.ServoElevate.setPower(-1);
                 robot.Elevator.setPower(0.5);
                 robot.Collector.setPower(1);
-                sleep(3000);
+                sleep(2000);
                 DriveStraightDistanceColor(-1000, 0.8);
         }
         checkOrientation();
@@ -277,7 +276,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             }
         }
         StopDriving();
-        sleep(100);
+        sleep(50);
     }
 
     private void DriveStraightDistanceFast(int distance, double power) {
