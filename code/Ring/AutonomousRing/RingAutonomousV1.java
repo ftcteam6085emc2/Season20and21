@@ -28,7 +28,7 @@ public class RingAutonomousV1 extends LinearOpMode {
     boolean whiteDetected = false;
     boolean ringLoaded = false;
 
-    Orientation angles; //Safety Goggles are for the weak
+    Orientation angles;
 
     RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
 

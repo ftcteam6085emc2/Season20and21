@@ -358,8 +358,9 @@ public class RingleaderV1 extends OpMode {
                 robot.Wobble.setPower(0);
             }
 
+            telemetry.addLine("Servo Position: "+robot.WobbleServo.getPosition());
             if(gamepad1.right_bumper){
-                robot.WobbleServo.setPosition(0.5);
+                robot.WobbleServo.setPosition(0.4);
             }
             else if (gamepad1.left_bumper){
                 robot.WobbleServo.setPosition(0);
