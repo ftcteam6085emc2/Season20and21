@@ -33,15 +33,18 @@ public class RingleaderV1 extends OpMode {
     boolean launcherCheck = true;
     boolean servoCheck = true;
     boolean powerUpdate = false;
-    //boolean leftStickCheck = true;
+    boolean dpadLeftCheck = true;
+    boolean switcher = false;
+    //boolean startCheck = true;
     //double targetHeading = 0;
     double currentHeading = 0;
     int a = 0;
     int b = 0;
     int x = 0;
     int y = 0;
-    boolean leftStickCheck1 = true;
-    int leftStick1 = 0;
+    int dividor = 3;
+    boolean startCheck1 = true;
+    int start1 = 0;
     int leftBumper = 0;
     int rightBumper = 0;
     //int targetChanging = 90;
@@ -65,6 +68,7 @@ public class RingleaderV1 extends OpMode {
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.Wobble.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -79,8 +83,7 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
-        if(robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000){ringLoaded = true;}
-        else{ringLoaded = false;}
+        ringLoaded = robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000;
         /*if(gamepad1.back && backCheck){
             dualMode = !dualMode;
             backCheck = false;
@@ -112,6 +115,22 @@ public class RingleaderV1 extends OpMode {
 
             robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+
+            if(gamepad1.dpad_up){
+                dividor = 1;
+            }
+            else if(gamepad1.dpad_down){
+                dividor = 3;
+            }
+
+            if(gamepad1.dpad_left && dpadLeftCheck){
+                MoveWobble(switcher);
+                switcher = !switcher;
+                dpadLeftCheck = false;
+            }
+            else if(!gamepad1.dpad_left){
+                dpadLeftCheck = true;
+            }
 
             if(gamepad1.dpad_right){
                 Strafe(750, 0.8);
@@ -196,10 +215,10 @@ public class RingleaderV1 extends OpMode {
                 robot.RearLeft.setPower(0);
             }
 
-            if (gamepad2.left_stick_button && leftStickCheck) {
+            if (gamepad2.left_stick_button && startCheck) {
                 checkOrientation();
                 autoHeading = currentHeading;
-                leftStickCheck = false;
+                startCheck = false;
             } else if (!gamepad2.left_stick_button){
                 leftStickCheck = true;
             }
@@ -349,16 +368,15 @@ public class RingleaderV1 extends OpMode {
             }
 
             if(gamepad1.right_trigger > 0){
-                robot.Wobble.setPower(gamepad1.right_trigger);
+                robot.Wobble.setPower(gamepad1.right_trigger/dividor);
             }
             else if(gamepad1.left_trigger > 0){
-                robot.Wobble.setPower(-gamepad1.left_trigger);
+                robot.Wobble.setPower(-gamepad1.left_trigger/dividor);
             }
             else {
                 robot.Wobble.setPower(0);
             }
 
-            telemetry.addLine("Servo Position: "+robot.WobbleServo.getPosition());
             if(gamepad1.right_bumper){
                 robot.WobbleServo.setPosition(0.4);
             }
@@ -372,32 +390,30 @@ public class RingleaderV1 extends OpMode {
             } else {
                 robot.ServoElevate.setPower(0);
             }*/
-            if(gamepad1.start && leftStickCheck1 && leftStick1 == 0){
+            if(gamepad1.start && startCheck1 && start1 == 0){
                 robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftStick1++;
-                leftStickCheck1 = false;
+                start1++;
+                startCheck1 = false;
             }
-            else if(gamepad1.start && leftStickCheck1 && leftStick1 == 1){
+            else if(gamepad1.start && startCheck1 && start1 == 1){
                 robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                leftStick1--;
-                leftStickCheck1 = false;
+                start1--;
+                startCheck1 = false;
             }
             else if(!gamepad1.start){
-                leftStickCheck1 = true;
+                startCheck1 = true;
             }
         }
         else if(expert){
             checkOrientation();
             telemetry.addLine("Power is at: " + power);
-            //telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
-            //telemetry.addLine("Target Changing: " + targetChanging);
             robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
             robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
 
@@ -424,14 +440,10 @@ public class RingleaderV1 extends OpMode {
                 rightBumper = 0;
                 servoCheck = false;
             }
-            else if (!(gamepad1.right_bumper || gamepad1.left_bumper)){
+            else if (!(gamepad1.right_bumper || gamepad1.left_bumper)) {
                 servoCheck = true;
             }
-
-            //if (gamepad1.right_bumper) {   //If I wanted to free up the bumpers, I could make x/y/a/b toggles with a bool or two
-                //robot.Collector.setPower(0);
-            //}
-
+            
             if (gamepad1.b && collectorCheck) {
                 robot.Collector.setPower(1);
                 b++;
@@ -454,10 +466,6 @@ public class RingleaderV1 extends OpMode {
                 collectorCheck = true;
             }
 
-            //if (gamepad1.left_bumper) {
-              //  robot.Launcher.setPower(0);
-                //spinning = false;
-            //}
             if (gamepad1.y && launcherCheck) {
                 robot.Launcher.setPower(Math.abs(power));
                 y++;
@@ -621,24 +629,24 @@ public class RingleaderV1 extends OpMode {
                 powerIncrement = true;
             }
 
-            if(gamepad1.start && leftStickCheck1 && leftStick1 == 0){
+            if(gamepad1.start && startCheck1 && start1 == 0){
                 robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftStick1++;
-                leftStickCheck1 = false;
+                start1++;
+                startCheck1 = false;
             }
-            else if(gamepad1.start && leftStickCheck1 && leftStick1 == 1){
+            else if(gamepad1.start && startCheck1 && start1 == 1){
                 robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                leftStick1--;
-                leftStickCheck1 = false;
+                start1--;
+                startCheck1 = false;
             }
             else if(!gamepad1.start){
-                leftStickCheck1 = true;
+                startCheck1 = true;
             }
 
             if(gamepad1.right_trigger > 0){
@@ -818,5 +826,24 @@ public class RingleaderV1 extends OpMode {
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    private void MoveWobble(boolean direction) {
+        if(direction){
+            for(double power = 1; power >= -0.3; power-=0.1) {
+                double time = getRuntime();
+                while (getRuntime() < time + 0.05) {
+                    robot.Wobble.setPower(power);
+                }
+            }
+        }
+        else {
+            for (double power = -1; power <= 0.3; power += 0.1) {
+                double time = getRuntime();
+                while (getRuntime() < time + 0.05) {
+                    robot.Wobble.setPower(power);
+                }
+            }
+        }
     }
 }

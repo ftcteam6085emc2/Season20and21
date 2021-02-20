@@ -504,8 +504,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         while(i <= j) {
             telemetry.addLine("i = "+i);
             telemetry.update();
-            if(robot.ringSensorColor.red() > 750 || robot.ringSensorColor.green() > 750){ringLoaded = true;}
-            else{ringLoaded = false;}
+            ringLoaded = robot.ringSensorColor.red() > 750 || robot.ringSensorColor.green() > 750;
             robot.ServoElevate.setPower(-1);
             robot.Elevator.setPower(0.5);
             robot.Collector.setPower(1);
