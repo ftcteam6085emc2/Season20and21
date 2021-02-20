@@ -63,12 +63,12 @@ public class RingleaderV1 extends OpMode {
         robot.Collector.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.Elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.Launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.Wobble.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //robot.Wobble.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Wobble.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.Wobble.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -123,17 +123,27 @@ public class RingleaderV1 extends OpMode {
                 dividor = 3;
             }
 
-            if(gamepad1.dpad_left && dpadLeftCheck){
-                MoveWobble(switcher);
-                switcher = !switcher;
-                dpadLeftCheck = false;
+            /*if(dividor == 1) {
+                if (gamepad1.dpad_left && dpadLeftCheck) {
+                    MoveWobble(switcher, true);
+                    switcher = !switcher;
+                    dpadLeftCheck = false;
+                } else if (!gamepad1.dpad_left) {
+                    dpadLeftCheck = true;
+                }
             }
-            else if(!gamepad1.dpad_left){
-                dpadLeftCheck = true;
-            }
+            else if (dividor == 3){
+                if (gamepad1.dpad_left && dpadLeftCheck) {
+                    MoveWobble(switcher, false);
+                    switcher = !switcher;
+                    dpadLeftCheck = false;
+                } else if (!gamepad1.dpad_left) {
+                    dpadLeftCheck = true;
+                }
+            }*/
 
             if(gamepad1.dpad_right){
-                Strafe(750, 0.8);
+                Strafe(700, 0.8);
             }
 
             /*if (gamepad1.dpad_left && leftCheck) {
@@ -332,15 +342,6 @@ public class RingleaderV1 extends OpMode {
                 powerIncrement = true;
             }
 
-            if(gamepad2.dpad_right){
-                power = 0.8;
-                powerUpdate = true;
-            }
-            else if(gamepad2.dpad_left){
-                power = 0.7;
-                powerUpdate = true;
-            }
-
             if (gamepad2.left_bumper && servoCheck){
                 robot.ServoElevate.setPower(1);
                 leftBumper++;
@@ -367,7 +368,7 @@ public class RingleaderV1 extends OpMode {
                 robot.ServoElevate.setPower(gamepad2.left_stick_y);
             }
 
-            if(gamepad1.right_trigger > 0){
+            /*if(gamepad1.right_trigger > 0){
                 robot.Wobble.setPower(gamepad1.right_trigger/dividor);
             }
             else if(gamepad1.left_trigger > 0){
@@ -378,11 +379,11 @@ public class RingleaderV1 extends OpMode {
             }
 
             if(gamepad1.right_bumper){
-                robot.WobbleServo.setPosition(0.4);
+                robot.WobbleServo.setPosition(0.7);
             }
             else if (gamepad1.left_bumper){
-                robot.WobbleServo.setPosition(0);
-            }
+                robot.WobbleServo.setPosition(0.2);
+            }*/
             /*if (gamepad2.right_bumper) {
                 robot.ServoElevate.setPower(-1);
             } else if (gamepad2.left_bumper) {
@@ -649,7 +650,7 @@ public class RingleaderV1 extends OpMode {
                 startCheck1 = true;
             }
 
-            if(gamepad1.right_trigger > 0){
+            /*if(gamepad1.right_trigger > 0){
                 robot.Wobble.setPower(gamepad1.right_trigger);
             }
             else if(gamepad1.left_trigger > 0){
@@ -664,7 +665,7 @@ public class RingleaderV1 extends OpMode {
             }
             else if (gamepad1.left_bumper){
                 robot.WobbleServo.setPosition(0);
-            }
+            }*/
         }
         else {
             telemetry.addLine("Power is at: " + power);
@@ -828,22 +829,40 @@ public class RingleaderV1 extends OpMode {
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private void MoveWobble(boolean direction) {
-        if(direction){
-            for(double power = 1; power >= -0.3; power-=0.1) {
-                double time = getRuntime();
-                while (getRuntime() < time + 0.05) {
-                    robot.Wobble.setPower(power);
+    /*private void MoveWobble(boolean direction, boolean holding) {
+        if(holding) {
+            if (direction) {
+                for (double power = 1; power >= -0.2; power -= 0.1) {
+                    double time = getRuntime();
+                    while (getRuntime() < time + 0.05) {
+                        robot.Wobble.setPower(power);
+                    }
+                }
+            } else {
+                for (double power = -0.9; power <= 0.2; power += 0.1) {
+                    double time = getRuntime();
+                    while (getRuntime() < time + 0.051) {
+                        robot.Wobble.setPower(power);
+                    }
                 }
             }
         }
-        else {
-            for (double power = -1; power <= 0.3; power += 0.1) {
-                double time = getRuntime();
-                while (getRuntime() < time + 0.05) {
-                    robot.Wobble.setPower(power);
+        else{
+            if (direction) {
+                for (double power = 0.7; power >= -0.2; power -= 0.1) {
+                    double time = getRuntime();
+                    while (getRuntime() < time + 0.05) {
+                        robot.Wobble.setPower(power);
+                    }
+                }
+            } else {
+                for (double power = -0.6; power <= 0.2; power += 0.1) {
+                    double time = getRuntime();
+                    while (getRuntime() < time + 0.051) {
+                        robot.Wobble.setPower(power);
+                    }
                 }
             }
         }
-    }
+    }*/
 }

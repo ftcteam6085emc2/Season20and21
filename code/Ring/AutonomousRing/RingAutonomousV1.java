@@ -120,8 +120,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 robot.Collector.setPower(0);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(-1450, 0.6);
-                Turn(1445, 0.8, true);
-                Turn(1445, 0.8, true);
+                Turn(1450, 0.8, true);
+                Turn(1450, 0.8, true);
                 //Strafe(2000, 0.8);
                 //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
@@ -146,8 +146,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistanceColor(-950, 0.8);
                 DriveStraightDistance(-500, 0.8);
                 Strafe(150, 0.6);
-                Turn(1445, 0.8, true);
-                Turn(1445, 0.8, true);
+                Turn(1450, 0.8, true);
+                Turn(1450, 0.8, true);
                 //Strafe(2000, 0.8);
                 //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
@@ -189,8 +189,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistanceColor(-2700, 1);
                 DriveStraightDistance(-500, 1);
                 Strafe(-1450, 0.8);
-                Turn(1445, 0.8, true);
-                Turn(1445, 0.8, true);
+                Turn(1450, 0.8, true);
+                Turn(1450, 0.8, true);
                 //Strafe(2000, 0.8);
                 //Strafe(-1600, 0.8);
                 //DriveStraightDistance(-1000, 0.8);
@@ -518,11 +518,11 @@ public class RingAutonomousV1 extends LinearOpMode {
                 }*/
                 if(i == 0) {
                     sleep(1000);
-                    Strafe(750, 0.8);
+                    Strafe(700, 0.8);
                 }
                 else if(i == 1){
                     sleep(250);
-                    Strafe(750, 0.8);
+                    Strafe(700, 0.8);
                 }
                 else if(i > 1){
                     sleep(1000);
