@@ -19,10 +19,11 @@ public class RingleaderHWMapSensorsColor {
     public DcMotor Collector  = null;
     public DcMotor Launcher  = null;
     public DcMotor Elevator = null;
-    //public DcMotor Wobble = null;
+    public DcMotor Wobble = null;
 
     public CRServo ServoElevate = null;
-    //public Servo WobbleServo = null;
+    public Servo WobbleServo = null;
+    public Servo WobbleRotate = null;
 
     public BNO055IMU imu = null;
 
@@ -51,10 +52,11 @@ public class RingleaderHWMapSensorsColor {
         Collector = hwMap.dcMotor.get("collector");
         Launcher = hwMap.dcMotor.get("launcher");
         Elevator = hwMap.dcMotor.get("elevator");
-        //Wobble = hwMap.dcMotor.get("wobble");
+        Wobble = hwMap.dcMotor.get("wobble");
 
         ServoElevate = hwMap.crservo.get("Servo");
-        //WobbleServo = hwMap.servo.get("WobbleServo");
+        WobbleServo = hwMap.servo.get("WobbleServo");
+        WobbleRotate = hwMap.servo.get("WobbleRotate");
 
         imu = hwMap.get(BNO055IMU.class, "imu");
 

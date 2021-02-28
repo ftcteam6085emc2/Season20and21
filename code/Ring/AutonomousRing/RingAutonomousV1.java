@@ -125,8 +125,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-600, 0.8);
                 offset -= currentHeading;
                 Strafe(1590, 0.6);
-                DriveStraightDistance(-500, 0.4);
-                DriveStraightDistance(500, 0.4);
+                DriveStraightDistance(-600, 0.4);
+                DriveStraightDistance(200, 0.4);
                 ShootPowershots(true);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
@@ -151,8 +151,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-2000, 0.8);
                 offset -= currentHeading;
                 Strafe(1590, 0.6);
-                DriveStraightDistance(-500, 0.4);
-                DriveStraightDistance(500, 0.4);
+                DriveStraightDistance(-600, 0.4);
+                DriveStraightDistance(200, 0.4);
                 ShootPowershots(true);
                 /*Strafe(-700, 0.8);
                 DriveStraightDistance(300, 0.8);
@@ -190,8 +190,8 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-600, 0.8);
                 offset -= currentHeading;
                 Strafe(1590, 0.6);
-                DriveStraightDistance(-500, 0.4);
-                DriveStraightDistance(500, 0.4);
+                DriveStraightDistance(-600, 0.4);
+                DriveStraightDistance(200, 0.4);
                 ShootPowershots(true);
                 /*Strafe(-700, 0.8);
                 DriveStraightDistance(300, 1);
@@ -496,7 +496,7 @@ public class RingAutonomousV1 extends LinearOpMode {
             j = 2;
         }
         robot.Launcher.setPower(0.7);
-        sleep(1000);
+        sleep(1500);
         double time = System.nanoTime()/1000000000;
         while(i <= j) {
             ringLoaded = robot.ringSensorColor.red() > 750 || robot.ringSensorColor.green() > 750;
@@ -512,12 +512,12 @@ public class RingAutonomousV1 extends LinearOpMode {
                     idle();
                 }*/
                 if(i == 0) {
-                    sleep(1000);
-                    Strafe(440, 0.8);
+                    sleep(1150);
+                    Strafe(400, 0.8);
                 }
                 else if(i == 1){
                     sleep(250);
-                    Strafe(525, 0.8);
+                    Strafe(490, 0.8);
                 }
                 else if(i > 1){
                     sleep(1000);
@@ -531,13 +531,13 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.ServoElevate.setPower(0);
         robot.Elevator.setPower(0);
         robot.Collector.setPower(0);
-        if(i > 1) {
+        /*if(i > 1) {
             if (tZone == 1) {
                 robot.Launcher.setPower(0);
             } else {
                 robot.Launcher.setPower(0.8);
             }
-        }
+        }*/
     }
 
     private void checkOrientation() {

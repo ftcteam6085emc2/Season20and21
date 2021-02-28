@@ -368,7 +368,7 @@ public class RingleaderV1 extends OpMode {
                 robot.ServoElevate.setPower(gamepad2.left_stick_y);
             }
 
-            /*if(gamepad1.right_trigger > 0){
+            if(gamepad1.right_trigger > 0){
                 robot.Wobble.setPower(gamepad1.right_trigger/dividor);
             }
             else if(gamepad1.left_trigger > 0){
@@ -383,7 +383,14 @@ public class RingleaderV1 extends OpMode {
             }
             else if (gamepad1.left_bumper){
                 robot.WobbleServo.setPosition(0.2);
-            }*/
+            }
+
+            if(gamepad1.a){
+                robot.WobbleRotate.setPosition(0.7);
+            }
+            else if (gamepad1.b){
+                robot.WobbleRotate.setPosition(0.2);
+            }
             /*if (gamepad2.right_bumper) {
                 robot.ServoElevate.setPower(-1);
             } else if (gamepad2.left_bumper) {
