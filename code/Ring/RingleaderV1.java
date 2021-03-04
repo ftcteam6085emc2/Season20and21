@@ -42,7 +42,7 @@ public class RingleaderV1 extends OpMode {
     int b = 0;
     int x = 0;
     int y = 0;
-    int dividor = 3;
+    //int dividor = 3;
     boolean startCheck1 = true;
     int start1 = 0;
     int leftBumper = 0;
@@ -116,12 +116,12 @@ public class RingleaderV1 extends OpMode {
             robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
             robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
 
-            if(gamepad1.dpad_up){
+            /*if(gamepad1.dpad_up){
                 dividor = 1;
             }
             else if(gamepad1.dpad_down){
                 dividor = 3;
-            }
+            }*/
 
             /*if(dividor == 1) {
                 if (gamepad1.dpad_left && dpadLeftCheck) {
@@ -369,10 +369,10 @@ public class RingleaderV1 extends OpMode {
             }
 
             if(gamepad1.right_trigger > 0){
-                robot.Wobble.setPower(gamepad1.right_trigger/dividor);
+                robot.Wobble.setPower(gamepad1.right_trigger);
             }
             else if(gamepad1.left_trigger > 0){
-                robot.Wobble.setPower(-gamepad1.left_trigger/dividor);
+                robot.Wobble.setPower(-gamepad1.left_trigger);
             }
             else {
                 robot.Wobble.setPower(0);
