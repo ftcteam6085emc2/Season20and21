@@ -81,15 +81,15 @@ public class RingAutonomousV1 extends LinearOpMode {
         checkOrientation();
         offset = currentHeading;
 
-        Strafe(-150, 0.6);
-        DriveStraightDistanceSquared(400, 0.4);
+        Strafe(-150, 0.8);
+        DriveStraightDistanceSquared(400, 0.6);
         Strafe(1550, 0.6);
         DriveStraightDistance(2000, 1, false);
-        DriveStraightDistanceColor(800, 0.6); //was color
+        DriveStraightDistanceColor(800, 0.8);
         Strafe(500, 0.8);
         checkOrientation();
         offset -= currentHeading;
-        Strafe(-50, 0.6);
+        Strafe(-50, 0.8);
         /*if(whiteDetected){
             relativeLayout.post(new Runnable() {
                 public void run() {
@@ -118,15 +118,44 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-300, 1, true);
                 sleep(200);
                 robot.Collector.setPower(0);
-                DriveStraightDistance(-300, 0.8, false);
-                Strafe(-400, 0.8);
+
+                Strafe(-100, 0.8);
+                robot.WobbleRotate.setPosition(0.2);
+                robot.WobbleServo.setPosition(0.2);
+                DriveStraightDistance(-3160, 1, false);
+                Strafe(-1550, 0.8);
+                Strafe(-100, 0.2);
+                robot.WobbleServo.setPosition(0.7);
+                sleep(300);
+                robot.Wobble.setPower(1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(1700, 0.8);
+                DriveStraightDistance(2000, 1, false);
+                DriveStraightDistanceColor(400, 0.8);
+                Strafe(500, 0.8);
+                checkOrientation();
+                offset -= currentHeading;
+                Strafe(-200, 0.8);
                 Turn(1450, 0.8, true);
+                Strafe(-250, 0.8);
+                robot.WobbleServo.setPosition(0.2);
+                Strafe(-200, 1);
+                Strafe(200, 1);
+                robot.WobbleRotate.setPosition(0.7);
+                robot.WobbleServo.setPosition(0.7);
+                robot.Wobble.setPower(-1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(300, 0.8);
+                DriveStraightDistance(-400, 0.8, false);
+
                 Turn(1445, 0.8, true);
                 Strafe(-600, 0.8);
                 offset -= currentHeading;
                 Strafe(1590, 0.6);
-                DriveStraightDistance(-600, 0.4, false);
-                DriveStraightDistance(200, 0.4, false);
+                DriveStraightDistance(-600, 0.6, false);
+                DriveStraightDistance(200, 0.6, false);
                 ShootPowershots(true);
                 /*while (robot.sensorRangeTop.getDistance(DistanceUnit.CM) > 180 && robot.sensorRangeTop.getDistance(DistanceUnit.CM) < 200) {   //Distance is 120cm - 180cm
                     DriveStraight(0.4);
@@ -138,15 +167,39 @@ public class RingAutonomousV1 extends LinearOpMode {
                 telemetry.addLine("There is 1 ring in the stack");
                 telemetry.update();
                 DriveStraightDistance(800, 0.8, false);
-                Strafe(-1600, -0.6);
+                Strafe(-1600, 0.6);
                 robot.Collector.setPower(0.5);
                 sleep(1000);
                 DriveStraightDistance(-300, 1, true);
                 sleep(200);
                 robot.Collector.setPower(0);
-                DriveStraightDistanceColor(-950, 0.8);
-                DriveStraightDistance(-500, 0.8, false);
+
+                Strafe(-50, 0.8);
+                robot.WobbleRotate.setPosition(0.2);
+                robot.WobbleServo.setPosition(0.2);
+                DriveStraightDistance(-4000, 1, false);
+                Strafe(-100, 0.2);
+                robot.WobbleServo.setPosition(0.7);
+                sleep(300);
+                robot.Wobble.setPower(1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(100, 0.8);
+                DriveStraightDistance(2000, 1, false);
+                DriveStraightDistanceColor(400, 0.6);
                 Turn(1450, 0.8, true);
+                robot.WobbleServo.setPosition(0.2);
+                Strafe(-100, 1);
+                Strafe(100, 1);
+                robot.WobbleRotate.setPosition(0.7);
+                robot.WobbleServo.setPosition(0.7);
+                robot.Wobble.setPower(-1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(1450, 0.8);
+
+                //DriveStraightDistanceColor(-950, 0.8);
+                //DriveStraightDistance(-500, 0.8, false);
                 Turn(1445, 0.8, true);
                 Strafe(-2000, 0.8);
                 offset -= currentHeading;
@@ -178,14 +231,41 @@ public class RingAutonomousV1 extends LinearOpMode {
                 sleep(1000);
                 DriveStraightDistance(-300, 1, true);
                 sleep(200);
-                robot.Collector.setPower(0);                //Strafe(2000, 0.8);
-                //Strafe(-1600, 0.8);
-                //DriveStraightDistance(-1000, 0.8);
-                //DriveStraightDistance(1000, 0.8);
-                DriveStraightDistanceColor(-2700, 1);
-                DriveStraightDistance(-500, 1, false);
-                Strafe(-400, 0.8);
+                robot.Collector.setPower(0);
+
+                Strafe(-50, 0.8);
+                robot.WobbleRotate.setPosition(0.2);
+                robot.WobbleServo.setPosition(0.2);
+                DriveStraightDistance(-5650, 1, false);
+                Strafe(-1600, 0.8);
+                Strafe(-100, 0.2);
+                robot.WobbleServo.setPosition(0.7);
+                sleep(300);
+                robot.Wobble.setPower(1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(1700, 0.8);
+                DriveStraightDistance(2000, 1, false);
+                DriveStraightDistanceColor(400, 0.6);
+                Strafe(500, 0.8);
+                checkOrientation();
+                offset -= currentHeading;
+                Strafe(-200, 0.6);
                 Turn(1450, 0.8, true);
+                robot.WobbleServo.setPosition(0.2);
+                Strafe(-100, 1);
+                Strafe(100, 1);
+                robot.WobbleRotate.setPosition(0.7);
+                robot.WobbleServo.setPosition(0.7);
+                robot.Wobble.setPower(-1);
+                sleep(100);
+                robot.Wobble.setPower(0);
+                Strafe(3200, 0.8);
+                DriveStraightDistance(-400, 0.8, false);
+
+                //DriveStraightDistanceColor(-2700, 1);
+                //DriveStraightDistance(-500, 1, false);
+                //Strafe(-400, 0.8);
                 Turn(1445, 0.8, true);
                 Strafe(-600, 0.8);
                 offset -= currentHeading;
