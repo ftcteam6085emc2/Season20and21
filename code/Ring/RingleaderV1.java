@@ -2,6 +2,7 @@ package org.firstinspires.ftc.Season20and21.code.Ring;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -79,10 +80,15 @@ public class RingleaderV1 extends OpMode {
         robot.imu.initialize(parameters);
         robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         checkOrientation();
+
+        robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+        robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
     }
 
     @Override
     public void loop() {
+        robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+        robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
         ringLoaded = robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000;
         /*if(gamepad1.back && backCheck){
             dualMode = !dualMode;
@@ -94,7 +100,10 @@ public class RingleaderV1 extends OpMode {
 
         telemetry.addLine("Color Sensor Alpha is:" + robot.sensorColor.alpha()); //No one will ever use this, so be it
         telemetry.addLine("Ring loaded: "+ ringLoaded);
-        if(robot.sensorColor.alpha() > 800){telemetry.addLine("On White Line");}
+        if(robot.sensorColor.alpha() > 800){
+            robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+            robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+        }
 
         if(gamepad1.right_stick_button && expertCheck){   //Cringe, but it looks good in control award
             expert = !expert;

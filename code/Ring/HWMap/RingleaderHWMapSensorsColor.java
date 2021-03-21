@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.Season20and21.code.Ring.HWMap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,6 +25,9 @@ public class RingleaderHWMapSensorsColor {
     public CRServo ServoElevate = null;
     public Servo WobbleServo = null;
     public Servo WobbleRotate = null;
+
+    public RevBlinkinLedDriver blinkinLedDriver;
+    public RevBlinkinLedDriver blinkinLedDriver2;
 
     public BNO055IMU imu = null;
 
@@ -57,6 +61,9 @@ public class RingleaderHWMapSensorsColor {
         ServoElevate = hwMap.crservo.get("Servo");
         WobbleServo = hwMap.servo.get("WobbleServo");
         WobbleRotate = hwMap.servo.get("WobbleRotate");
+
+        blinkinLedDriver = hwMap.get(RevBlinkinLedDriver.class, "blinkin");
+        blinkinLedDriver2 = hwMap.get(RevBlinkinLedDriver.class, "blinkin2");
 
         imu = hwMap.get(BNO055IMU.class, "imu");
 
