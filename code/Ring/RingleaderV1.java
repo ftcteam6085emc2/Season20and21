@@ -22,6 +22,7 @@ public class RingleaderV1 extends OpMode {
     RingleaderHWMapSensorsColor robot = new RingleaderHWMapSensorsColor();
     double power = 0.5;
     double targetHeading = 0;
+    double whiteTime = 0;
     boolean ringLoaded = false;
     boolean dualMode = true;
     boolean powerIncrement = true;
@@ -87,8 +88,10 @@ public class RingleaderV1 extends OpMode {
 
     @Override
     public void loop() {
-        robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
-        robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+        if(whiteTime < getRuntime()) {
+            robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+            robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+        }
         ringLoaded = robot.ringSensorColor.red() > 1000 || robot.ringSensorColor.green() > 1000;
         /*if(gamepad1.back && backCheck){
             dualMode = !dualMode;
@@ -103,6 +106,7 @@ public class RingleaderV1 extends OpMode {
         if(robot.sensorColor.alpha() > 800){
             robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
             robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+            whiteTime = getRuntime() + 1;
         }
 
         if(gamepad1.right_stick_button && expertCheck){   //Cringe, but it looks good in control award

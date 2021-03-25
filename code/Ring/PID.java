@@ -60,7 +60,7 @@ public class PID extends LinearOpMode {
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        /*robot.FrontRight.setTargetPosition(0);
+        robot.FrontRight.setTargetPosition(0);
         robot.FrontLeft.setTargetPosition(0);
         robot.RearRight.setTargetPosition(0);
         robot.RearLeft.setTargetPosition(0);
@@ -69,7 +69,7 @@ public class PID extends LinearOpMode {
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.RearRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.RearLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        */
+
         robot.FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -88,7 +88,7 @@ public class PID extends LinearOpMode {
         checkOrientation();
         offset = currentHeading;
 
-        DriveStraightDistance(1000, true);
+        Turn(1450, 1, true);
     }
 
     private void DriveStraight(double leftPower, double rightPower) {
@@ -151,6 +151,77 @@ public class PID extends LinearOpMode {
         if(!fast) {
             sleep(10);
         }
+    }
+
+    private void Turn(int distance, double power, boolean half) {
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
+        robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
+        robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
+
+        if(half){
+            targetHeading = 90;
+        }
+
+        DriveStraight(power, power);
+        while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
+            idle();
+            checkOrientation();
+            p = robot.FrontRight.getTargetPosition() - robot.FrontRight.getCurrentPosition();
+            turn_error = targetHeading - currentHeading;
+            while(turn_error > 180){
+                turn_error -= 360;
+            }
+            while(turn_error < -180){
+                turn_error += 360;
+            }
+            output = Range.clip(k_p*p, -1, 1);
+            steer = Range.clip(turn_k_p*turn_error, -2, 2);
+            DriveStraight(output - steer, output + steer);
+            /*checkOrientation();
+            if (distance == Math.abs(distance)) {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            } else {
+                if (currentHeading > targetHeading + 1) {
+                    robot.FrontRight.setPower(power * 1.1);
+                    robot.FrontLeft.setPower(power * 0.9);
+                    robot.RearRight.setPower(power * 1.1);
+                    robot.RearLeft.setPower(power * 0.9);
+                } else if (currentHeading < targetHeading - 1) {
+                    robot.FrontRight.setPower(power * 0.9);
+                    robot.FrontLeft.setPower(power * 1.1);
+                    robot.RearRight.setPower(power * 0.9);
+                    robot.RearLeft.setPower(power * 1.1);
+                } else {
+                    robot.FrontRight.setPower(power);
+                    robot.FrontLeft.setPower(power);
+                    robot.RearRight.setPower(power);
+                    robot.RearLeft.setPower(power);
+                }
+            }*/
+        }
+        /*if(half) {
+            checkOrientation();
+            offset -= currentHeading;
+            targetHeading = 0;
+        }*/
+        StopDriving();
+        sleep(10);
     }
 
     private void checkOrientation() {

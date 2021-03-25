@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.Season20and21.code.Ring.HWMap.RingleaderHWMapSensorsColor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -22,6 +23,12 @@ public class RingAutonomousV1 extends LinearOpMode {
     double targetHeading = 0;
     double currentHeading = 0;
     double offset = 0;
+    double p;
+    double k_p = 0.003;
+    double turn_k_p = 0.003 ;
+    double steer;
+    double turn_error;
+    double output;
     int averageCount1 = 0;
     int averageCount2 = 0;
     int averageCount3 = 0;
@@ -83,7 +90,7 @@ public class RingAutonomousV1 extends LinearOpMode {
 
         Strafe(-150, 0.8);
         DriveStraightDistanceSquared(400, 0.6);
-        Strafe(1550, 0.8);
+        Strafe(1200, 0.8);
         DriveStraightDistance(2000, 1, false);
         DriveStraightDistanceColor(800, 0.8);
         /*Strafe(500, 0.8);
@@ -119,28 +126,24 @@ public class RingAutonomousV1 extends LinearOpMode {
                 sleep(200);
                 robot.Collector.setPower(0);
 
-                Strafe(-200, 0.6);
                 robot.WobbleRotate.setPosition(0.2);
                 robot.WobbleServo.setPosition(0.2);
-                DriveStraightDistance(-4000, 1, false);
-                offset -= currentHeading;
-                DriveStraightDistance(550, 1, false);
+                DriveStraightDistance(-3000, 1, false);
+                //offset -= currentHeading;
+                //DriveStraightDistance(550, 1, false);
                 Strafe(-1700, 0.6);
-                Strafe(-100, 0.2);
                 robot.WobbleServo.setPosition(0.7);
                 sleep(500);
                 robot.Wobble.setPower(1);
                 sleep(300);
                 robot.Wobble.setPower(0);
-                Strafe(1600, 0.8);
-                DriveStraightDistance(2600, 1, false);
+                Strafe(1300, 0.8);
+                DriveStraightDistance(2200, 1, false);
                 DriveStraightDistanceColor(400, 0.8);
                 /*Strafe(500, 0.8);
                 checkOrientation();
                 offset -= currentHeading;*/
-                Strafe(-50, 0.8);
                 Turn(1450, 0.8, true);
-                Strafe(-250, 1);
                 robot.WobbleServo.setPosition(0.2);
                 Strafe(-200, 1);
                 Strafe(200, 1);
@@ -153,9 +156,9 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-400, 1, false);
 
                 Turn(1445, 0.8, true);
-                Strafe(-1000, 0.8);
-                offset -= currentHeading;
-                Strafe(1590, 0.6);
+                //Strafe(-1000, 0.8);
+                //offset -= currentHeading;
+                Strafe(590, 0.6);
                 DriveStraightDistance(-600, 0.8, false);
                 DriveStraightDistance(200, 0.8, false);
                 ShootPowershots(true);
@@ -204,9 +207,9 @@ public class RingAutonomousV1 extends LinearOpMode {
                 DriveStraightDistance(-500, 0.8, false);
                 Turn(1450, 0.8, true);
                 Turn(1445, 0.8, true);
-                Strafe(-2000, 0.8);
-                offset -= currentHeading;
-                Strafe(1590, 0.6);
+                //Strafe(-2000, 0.8);
+                //offset -= currentHeading;
+                Strafe(410, 0.6);
                 DriveStraightDistance(-600, 0.8, false);
                 DriveStraightDistance(200, 0.8, false);
                 ShootPowershots(true);
@@ -239,9 +242,9 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-200, 0.6);
                 robot.WobbleRotate.setPosition(0.2);
                 robot.WobbleServo.setPosition(0.2);
-                DriveStraightDistance(-6500, 1, false);
-                offset -= currentHeading;
-                DriveStraightDistance(550, 1, false);
+                DriveStraightDistance(-5950, 1, false);
+                //offset -= currentHeading;
+                //DriveStraightDistance(550, 1, false);
                 Strafe(-1700, 0.6);
                 Strafe(-100, 0.3);
                 robot.WobbleServo.setPosition(0.7);
@@ -256,7 +259,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 /*Strafe(500, 0.8);
                 checkOrientation();
                 offset -= currentHeading;*/
-                Strafe(-50, 0.8);
+                Strafe(-300, 0.8);
                 Turn(1450, 0.8, true);
                 robot.WobbleServo.setPosition(0.2);
                 Strafe(-100, 1);
@@ -273,9 +276,9 @@ public class RingAutonomousV1 extends LinearOpMode {
                 //DriveStraightDistance(-500, 1, false);
                 //Strafe(-400, 0.8);
                 Turn(1445, 0.8, true);
-                Strafe(-600, 0.8);
-                offset -= currentHeading;
-                Strafe(1590, 0.8);
+                //Strafe(-600, 0.8);
+                //offset -= currentHeading;
+                Strafe(990, 0.8);
                 DriveStraightDistance(-600, 0.8, false);
                 DriveStraightDistance(200, 0.8, false);
                 ShootPowershots(true);
@@ -298,15 +301,15 @@ public class RingAutonomousV1 extends LinearOpMode {
         HeadingHolder.setHeading(currentHeading);
     }
 
-    private void DriveStraight(double power) {
-        robot.FrontRight.setPower(power);
-        robot.FrontLeft.setPower(power);
-        robot.RearRight.setPower(power);
-        robot.RearLeft.setPower(power);
+    private void DriveStraight(double rightPower, double leftPower) {
+        robot.FrontRight.setPower(rightPower);
+        robot.FrontLeft.setPower(leftPower);
+        robot.RearRight.setPower(rightPower);
+        robot.RearLeft.setPower(leftPower);
     }
 
     private void StopDriving() {
-        DriveStraight(0);
+        DriveStraight(0, 0);
     }
 
     private void DriveStraightDistance(int distance, double power, boolean fast) {
@@ -317,12 +320,22 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
 
-        DriveStraight(power);
+        DriveStraight(power, power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
-
             checkOrientation();
-            if (distance == Math.abs(distance)) {
+            p = robot.FrontRight.getTargetPosition() - robot.FrontRight.getCurrentPosition();
+            turn_error = targetHeading - currentHeading;
+            while(turn_error > 180){
+                turn_error -= 360;
+            }
+            while(turn_error < -180){
+                turn_error += 360;
+            }
+            output = Range.clip(k_p*p, -1, 1);
+            steer = Range.clip(turn_k_p*turn_error, -2, 2);
+            DriveStraight(output - steer, output + steer);
+            /*if (distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 0.9);
                     robot.FrontLeft.setPower(power * 1.1);
@@ -356,7 +369,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                     robot.RearRight.setPower(power);
                     robot.RearLeft.setPower(power);
                 }
-            }
+            }*/
         }
         StopDriving();
         if(!fast) {
@@ -373,7 +386,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
 
-        DriveStraight(power);
+        DriveStraight(power, power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
@@ -397,11 +410,23 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() - distance);
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
 
-        DriveStraight(power);
+        DriveStraight(power, power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
             checkOrientation();
+            p = robot.FrontRight.getTargetPosition() - robot.FrontRight.getCurrentPosition();
+            turn_error = targetHeading - currentHeading;
+            while(turn_error > 180){
+                turn_error -= 360;
+            }
+            while(turn_error < -180){
+                turn_error += 360;
+            }
+            output = Range.clip(k_p*p, -1, 1);
+            steer = Range.clip(turn_k_p*turn_error, -2, 2);
+            DriveStraight(output - steer, output + steer);
+            /*checkOrientation();
             if (distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 0.9);
@@ -436,7 +461,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                     robot.RearRight.setPower(power);
                     robot.RearLeft.setPower(power);
                 }
-            }
+            }*/
         }
         StopDriving();
         sleep(10);
@@ -450,7 +475,7 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearRight.setTargetPosition(robot.RearRight.getCurrentPosition() + distance);
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() - distance);
 
-        DriveStraight(power);
+        DriveStraight(power, power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
 
@@ -472,14 +497,16 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.RearLeft.setTargetPosition(robot.RearLeft.getCurrentPosition() + distance);
 
         if(half){
-            targetHeading = 90;
+            targetHeading += 90;
         }
 
-        DriveStraight(power);
+        DriveStraight(power, power);
         while ((robot.FrontRight.isBusy() && robot.RearLeft.isBusy() && robot.RearRight.isBusy() && robot.FrontLeft.isBusy()) && opModeIsActive()) {
             idle();
-
-            checkOrientation();
+            p = robot.FrontRight.getTargetPosition() - robot.FrontRight.getCurrentPosition();
+            output = Range.clip(k_p*p, -1, 1);
+            DriveStraight(output, output);
+            /*checkOrientation();
             if (distance == Math.abs(distance)) {
                 if (currentHeading > targetHeading + 1) {
                     robot.FrontRight.setPower(power * 0.9);
@@ -514,13 +541,13 @@ public class RingAutonomousV1 extends LinearOpMode {
                     robot.RearRight.setPower(power);
                     robot.RearLeft.setPower(power);
                 }
-            }
+            }*/
         }
-        if(half) {
+        /*if(half) {
             checkOrientation();
             offset -= currentHeading;
             targetHeading = 0;
-        }
+        }*/
         StopDriving();
         sleep(10);
     }
