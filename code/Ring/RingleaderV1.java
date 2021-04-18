@@ -106,7 +106,7 @@ public class RingleaderV1 extends OpMode {
         if(robot.sensorColor.alpha() > 800){
             robot.blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
             robot.blinkinLedDriver2.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
-            whiteTime = getRuntime() + 1;
+            whiteTime = getRuntime() + 0.1;
         }
 
         if(gamepad1.right_stick_button && expertCheck){   //Cringe, but it looks good in control award
@@ -123,11 +123,11 @@ public class RingleaderV1 extends OpMode {
             //telemetry.addLine("Target Heading: " + targetHeading);
             telemetry.addLine("Current Heading: " + currentHeading);
             //telemetry.addLine("Target Changing: " + targetChanging);
-            robot.FrontLeft.setPower(gamepad1.left_stick_y + gamepad1.left_stick_x);
-            robot.RearLeft.setPower(gamepad1.left_stick_y - gamepad1.left_stick_x);
+            robot.FrontLeft.setVelocity(2700*(gamepad1.left_stick_y + gamepad1.left_stick_x));
+            robot.RearLeft.setVelocity(2700*(gamepad1.left_stick_y - gamepad1.left_stick_x));
 
-            robot.FrontRight.setPower(-gamepad1.right_stick_y - gamepad1.right_stick_x);
-            robot.RearRight.setPower(-gamepad1.right_stick_y + gamepad1.right_stick_x);
+            robot.FrontRight.setVelocity(2700*(-gamepad1.right_stick_y - gamepad1.right_stick_x));
+            robot.RearRight.setVelocity(2700*(-gamepad1.right_stick_y + gamepad1.right_stick_x));
 
             /*if(gamepad1.dpad_up){
                 dividor = 1;
