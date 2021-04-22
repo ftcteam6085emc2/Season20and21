@@ -35,8 +35,6 @@ public class RingleaderV1 extends OpMode {
     boolean launcherCheck = true;
     boolean servoCheck = true;
     boolean powerUpdate = false;
-    boolean dpadLeftCheck = true;
-    boolean switcher = false;
     //boolean startCheck = true;
     //double targetHeading = 0;
     double currentHeading = 0;
