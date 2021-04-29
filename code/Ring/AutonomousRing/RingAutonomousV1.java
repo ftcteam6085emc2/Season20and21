@@ -74,7 +74,6 @@ public class RingAutonomousV1 extends LinearOpMode {
         robot.FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.Launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         while (!isStopRequested() && !robot.imu.isGyroCalibrated()) {
             sleep(50);
             idle();
@@ -240,10 +239,10 @@ public class RingAutonomousV1 extends LinearOpMode {
                 Strafe(-200);
                 robot.WobbleRotate.setPosition(0.2);
                 robot.WobbleServo.setPosition(0.2);
-                DriveStraightDistance(-6000, false);
+                DriveStraightDistance(-6250, false);
                 //offset -= currentHeading;
                 //DriveStraightDistance(550, 1, false);
-                Strafe(-1600);
+                Strafe(-1400);
                 orient(0.1);
                 robot.WobbleServo.setPosition(0.7);
                 sleep(500);
@@ -251,7 +250,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 sleep(300);
                 robot.Wobble.setPower(0);
                 Strafe(1300);
-                DriveStraightDistance(5500, false);
+                DriveStraightDistance(5750, false);
                 //DriveStraightDistance(2700, false);
                 //DriveStraightDistanceColor(400);
                 //DriveStraightDistance(2500, false);
@@ -275,7 +274,7 @@ public class RingAutonomousV1 extends LinearOpMode {
                 //Strafe(-400, 0.8);
                 targetHeading = -180;
                 Turn(1475);
-                DriveStraightDistance(800, false);
+                DriveStraightDistance(400, false);
                 //Strafe(-600, 0.8);
                 //offset -= currentHeading;
                 /////Strafe(990);
